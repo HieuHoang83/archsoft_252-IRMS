@@ -1,0 +1,151 @@
+% ============================================================
+% PART 3: UC16 - UC22
+% ============================================================
+
+\section*{1.11. Đặc tả Use Case Scenario (Phần 4: UC 16--20)}
+
+\subsection*{Use Case 16: Đánh dấu món ăn ``Sẵn sàng phục vụ''}
+\begin{longtable}{|P{4cm}|P{11cm}|}
+\hline
+\textbf{Thuộc tính} & \textbf{Chi tiết} \\ \hline \endfirsthead
+\hline \textbf{Thuộc tính} & \textbf{Chi tiết} \\ \hline \endhead
+Tên Use Case & UC16. Đánh dấu món ăn đã hoàn tất và ``Sẵn sàng phục vụ'' (Ready to Serve) \\ \hline
+Actor chính & Đầu bếp (Kitchen Staff) \\ \hline
+Mục đích & Ghi nhận món ăn đã nấu xong, báo cho hệ thống điều phối nhân viên phục vụ mang món ra bàn. \\ \hline
+Tiền điều kiện & Món ăn đang ở trạng thái ``Đang chế biến'' (Cooking) trên màn hình KDS. \\ \hline
+Hậu điều kiện & Trạng thái món đổi thành ``Sẵn sàng phục vụ''; thông báo được chuyển đến màn hình POS/thiết bị của nhân viên. \\ \hline
+Luồng sự kiện chính &
+1. Đầu bếp hoàn tất chế biến và bày món ra khay chờ (Expo window).\newline
+2. Đầu bếp chạm nút ``Hoàn thành'' (Done/Bump) trên phiếu tại KDS.\newline
+3. Hệ thống xóa phiếu món khỏi màn hình đầu bếp (hoặc chuyển sang danh sách Đã xong).\newline
+4. Hệ thống cập nhật trạng thái món thành ``Sẵn sàng phục vụ'' trên toàn hệ thống.\newline
+5. Hệ thống gửi thông báo (nhấp nháy/âm thanh) đến POS của nhân viên phụ trách bàn. \\ \hline
+Luồng ngoại lệ &
+\textbf{2a. Bấm nhầm khi chưa nấu xong:} Đầu bếp vào tab ``Đã hoàn thành'', chọn phiếu và nhấn ``Hoàn tác'' (Recall). Hệ thống đưa phiếu trở lại màn hình chính. \\ \hline
+\end{longtable}
+
+\subsection*{Use Case 17: Xem cảnh báo món ăn sắp trễ thời gian}
+\begin{longtable}{|P{4cm}|P{11cm}|}
+\hline
+\textbf{Thuộc tính} & \textbf{Chi tiết} \\ \hline \endfirsthead
+\hline \textbf{Thuộc tính} & \textbf{Chi tiết} \\ \hline \endhead
+Tên Use Case & UC17. Xem cảnh báo các món ăn sắp trễ thời gian phục vụ quy định \\ \hline
+Actor chính & Đầu bếp (Kitchen Staff) \\ \hline
+Mục đích & Hệ thống hỗ trợ đầu bếp phân bổ lại sự tập trung vào các món sắp hoặc đã vượt quá thời gian chế biến tiêu chuẩn (SLA). \\ \hline
+Tiền điều kiện & Hệ thống đang đếm ngược thời gian nấu của ít nhất một món ăn; KDS đang hoạt động bình thường. \\ \hline
+Hậu điều kiện & Đầu bếp nhận biết được sự khẩn cấp và ưu tiên xử lý món bị trễ. \\ \hline
+Luồng sự kiện chính &
+1. Hệ thống liên tục so sánh thời gian đã trôi qua của phiếu nấu với Prep Time trong cơ sở dữ liệu.\newline
+2. Khi phiếu đạt 80\% thời gian cho phép, hệ thống chuyển viền phiếu sang màu vàng (Sắp trễ).\newline
+3. Khi phiếu vượt 100\% thời gian, hệ thống chuyển toàn bộ nền phiếu sang đỏ và nhấp nháy liên tục.\newline
+4. Đầu bếp nhìn thấy cảnh báo trực quan và điều chỉnh ưu tiên nấu nướng.\newline
+5. (Tuỳ chọn) Hệ thống tự động gửi cảnh báo cho Quản lý bếp qua màn hình tổng. \\ \hline
+Luồng ngoại lệ &
+\textbf{2a. Thiếu nguyên liệu khẩn cấp:} Đầu bếp nhấn vào phiếu và chọn ``Tạm ngưng'' (Hold) kèm lý do. Hệ thống dừng đếm thời gian trễ và báo lại cho quản lý. \\ \hline
+\end{longtable}
+
+\subsection*{Use Case 18: Cập nhật thủ công số lượng nguyên liệu đã sử dụng}
+\begin{longtable}{|P{4cm}|P{11cm}|}
+\hline
+\textbf{Thuộc tính} & \textbf{Chi tiết} \\ \hline \endfirsthead
+\hline \textbf{Thuộc tính} & \textbf{Chi tiết} \\ \hline \endhead
+Tên Use Case & UC18. Cập nhật thủ công số lượng nguyên liệu đã sử dụng sau khi nấu xong \\ \hline
+Actor chính & Đầu bếp (Kitchen Staff) \\ \hline
+Mục đích & Trừ đi lượng nguyên liệu bổ sung, hư hỏng hoặc làm rơi vãi không theo định lượng chuẩn, giúp số liệu tồn kho luôn chính xác. \\ \hline
+Tiền điều kiện & Đầu bếp có quyền truy cập vào module quản lý nguyên liệu/tồn kho tại bếp. \\ \hline
+Hậu điều kiện & Cơ sở dữ liệu tồn kho được trừ số lượng tương ứng; lịch sử trừ kho được ghi nhận cho tài khoản Đầu bếp. \\ \hline
+Luồng sự kiện chính &
+1. Đầu bếp mở chức năng ``Cập nhật tồn kho'' trên màn hình quản lý.\newline
+2. Đầu bếp tìm kiếm tên nguyên liệu (ví dụ: Cá hồi fillet, Dầu ăn).\newline
+3. Hệ thống hiển thị số lượng tồn khả dụng hiện tại.\newline
+4. Đầu bếp nhập số lượng cần trừ đi và ghi chú lý do (VD: ``Làm rớt'').\newline
+5. Hệ thống xác nhận giao dịch, cập nhật lại số tồn thực tế và lưu vào nhật ký (audit log). \\ \hline
+Luồng ngoại lệ &
+\textbf{4a. Số lượng trừ vượt quá tồn kho:} Hệ thống cảnh báo ``Số lượng trừ không hợp lệ (Vượt quá tồn kho)''. Đầu bếp phải nhập lại hoặc yêu cầu quản lý kiểm kê. \\ \hline
+\end{longtable}
+
+\subsection*{Use Case 19: Xuất hóa đơn tổng hợp}
+\begin{longtable}{|P{4cm}|P{11cm}|}
+\hline
+\textbf{Thuộc tính} & \textbf{Chi tiết} \\ \hline \endfirsthead
+\hline \textbf{Thuộc tính} & \textbf{Chi tiết} \\ \hline \endhead
+Tên Use Case & UC19. Xuất hóa đơn tổng hợp phí thức ăn, đồ uống và các phụ phí \\ \hline
+Actor chính & Thu ngân (Cashiers) \\ \hline
+Mục đích & Hệ thống tự động tính toán tổng số tiền khách hàng cần thanh toán, bao gồm mọi loại phí, để tiến hành thu tiền. \\ \hline
+Tiền điều kiện & Bàn đã ăn xong, khách yêu cầu tính tiền; toàn bộ món ăn trong đơn đã được đánh dấu ``Đã phục vụ'' (Served). \\ \hline
+Hậu điều kiện & Hóa đơn tạm tính (Pre-receipt) được in ra hoặc hiển thị thành công với con số chính xác tuyệt đối. \\ \hline
+Luồng sự kiện chính &
+1. Thu ngân chọn bàn yêu cầu tính tiền trên POS và nhấn ``Thanh toán'' (Checkout).\newline
+2. Hệ thống tổng hợp tất cả các món ăn đã gọi và giá tiền tương ứng từ cơ sở dữ liệu.\newline
+3. Hệ thống tự động tính toán phụ phí: Thuế VAT (8\% hoặc 10\%), Phí phục vụ (Service charge).\newline
+4. Hệ thống hiển thị màn hình hóa đơn chi tiết với Tạm tính, Tổng phí và Thành tiền cuối cùng.\newline
+5. Thu ngân nhấn ``In hóa đơn tạm tính''. Hệ thống điều khiển máy in nhiệt xuất ra giấy. \\ \hline
+Luồng ngoại lệ &
+\textbf{2a. Có món đang ở trạng thái ``Đang chế biến'':} Hệ thống cảnh báo ``Bàn này vẫn còn món chưa phục vụ. Bạn có chắc muốn tính tiền?''. \\ \hline
+\end{longtable}
+
+\subsection*{Use Case 20: Áp dụng mã khuyến mãi hoặc giảm giá}
+\begin{longtable}{|P{4cm}|P{11cm}|}
+\hline
+\textbf{Thuộc tính} & \textbf{Chi tiết} \\ \hline \endfirsthead
+\hline \textbf{Thuộc tính} & \textbf{Chi tiết} \\ \hline \endhead
+Tên Use Case & UC20. Áp dụng mã khuyến mãi hoặc chương trình giảm giá vào hóa đơn \\ \hline
+Actor chính & Thu ngân (Cashiers) \\ \hline
+Mục đích & Hệ thống xác thực và giảm trừ số tiền thanh toán dựa trên mã voucher, hạng thành viên hoặc chương trình khuyến mãi hiện hành. \\ \hline
+Tiền điều kiện & Đơn hàng đang ở màn hình Thanh toán, chưa chốt phương thức thanh toán cuối cùng. \\ \hline
+Hậu điều kiện & Hóa đơn được cập nhật lại số tiền phải trả sau khi áp dụng giảm giá hợp lệ. \\ \hline
+Luồng sự kiện chính &
+1. Tại màn hình Thanh toán, Thu ngân chọn mục ``Khuyến mãi / Giảm giá''.\newline
+2. Thu ngân quét mã QR voucher, nhập mã code hoặc quét thẻ thành viên của khách.\newline
+3. Hệ thống kết nối với dịch vụ Khuyến mãi (Promotion Module) để xác thực tính hợp lệ.\newline
+4. Hệ thống tính toán số tiền được giảm (VD: giảm 10\% tối đa 50k).\newline
+5. Hệ thống hiển thị dòng ``Chiết khấu khuyến mãi'' có giá trị âm và cập nhật Thành tiền mới.\newline
+6. Thu ngân thông báo cho khách số tiền cuối cùng. \\ \hline
+Luồng ngoại lệ &
+\textbf{3a. Mã không hợp lệ hoặc hết hạn:} Hệ thống báo lỗi đỏ. Thu ngân thông báo lại cho khách và xóa mã khỏi hóa đơn.\newline
+\textbf{3b. Mã giảm giá trùng lặp:} Hệ thống báo lỗi và yêu cầu Thu ngân chỉ chọn 1 mã có lợi nhất. \\ \hline
+\end{longtable}
+
+\section*{1.12. Đặc tả Use Case Scenario (Phần 5: UC 21--25)}
+
+\subsection*{Use Case 21: Chia hóa đơn (Split-bill)}
+\begin{longtable}{|P{4cm}|P{11cm}|}
+\hline
+\textbf{Thuộc tính} & \textbf{Chi tiết} \\ \hline \endfirsthead
+\hline \textbf{Thuộc tính} & \textbf{Chi tiết} \\ \hline \endhead
+Tên Use Case & UC21. Thực hiện chia hóa đơn (Split-bill) theo yêu cầu của khách hàng \\ \hline
+Actor chính & Thu ngân (Cashiers) \\ \hline
+Mục đích & Hệ thống tự động phân chia tổng tiền thành nhiều hóa đơn nhỏ để khách hàng dễ dàng trả tiền theo phần ăn của mỗi người. \\ \hline
+Tiền điều kiện & Bàn đã ăn xong, khách yêu cầu chia bill; hóa đơn tổng chưa được thanh toán. \\ \hline
+Hậu điều kiện & Hệ thống tách thành nhiều hóa đơn con, mỗi hóa đơn có thể thanh toán bằng các phương thức khác nhau. \\ \hline
+Luồng sự kiện chính &
+1. Tại màn hình Thanh toán, Thu ngân chọn ``Chia hóa đơn'' (Split Bill).\newline
+2. Hệ thống cung cấp hai lựa chọn: ``Chia đều'' hoặc ``Chia theo món''.\newline
+3. Thu ngân chọn phương thức chia.\newline
+4. Hệ thống mở giao diện kéo-thả. Thu ngân kéo các món sang ``Hóa đơn khách A'', ``Hóa đơn khách B''.\newline
+5. Hệ thống tự động tính lại Thuế và Phí phục vụ cho từng hóa đơn con.\newline
+6. Thu ngân tiến hành thanh toán tuần tự cho từng hóa đơn nhỏ. \\ \hline
+Luồng ngoại lệ &
+\textbf{5a. Món ăn số lượng 1 nhưng 2 khách muốn cưa đôi:} Thu ngân chọn ``Chia tỉ lệ'' (Split by fraction). Hệ thống cắt món thành 2 phần (mỗi phần 50\% giá trị) vào 2 hóa đơn con. \\ \hline
+\end{longtable}
+
+\subsection*{Use Case 22: Xử lý thanh toán qua tiền mặt, thẻ hoặc ví điện tử}
+\begin{longtable}{|P{4cm}|P{11cm}|}
+\hline
+\textbf{Thuộc tính} & \textbf{Chi tiết} \\ \hline \endfirsthead
+\hline \textbf{Thuộc tính} & \textbf{Chi tiết} \\ \hline \endhead
+Tên Use Case & UC22. Xử lý thanh toán qua tiền mặt, thẻ ngân hàng hoặc ví điện tử \\ \hline
+Actor chính & Thu ngân (Cashiers) \\ \hline
+Mục đích & Ghi nhận phương thức khách hàng dùng để trả tiền, kết nối với bên thứ 3 (nếu cần) và hoàn tất vòng đời của đơn hàng. \\ \hline
+Tiền điều kiện & Số tiền cuối cùng trên hóa đơn đã được chốt. \\ \hline
+Hậu điều kiện & Giao dịch được ghi nhận ``Thành công''; đơn hàng chuyển sang ``Đã thanh toán'' (Paid); bàn được giải phóng. \\ \hline
+Luồng sự kiện chính &
+1. Thu ngân hỏi khách phương thức thanh toán và chọn tương ứng trên POS.\newline
+2. \textbf{Nếu Tiền mặt:} Thu ngân nhập số tiền khách đưa. Hệ thống tự động tính tiền thối lại.\newline
+3. \textbf{Nếu Thẻ/Ví điện tử:} Hệ thống truyền số tiền sang máy POS quẹt thẻ hoặc hiển thị mã QR động.\newline
+4. Khách hàng quẹt thẻ hoặc quét mã QR.\newline
+5. Hệ thống nhận tín hiệu ``Thành công'' từ Payment Gateway.\newline
+6. Hệ thống đổi trạng thái đơn thành ``Đã thanh toán'' và in hóa đơn chính thức (VAT/Receipt). \\ \hline
+Luồng ngoại lệ &
+\textbf{5a. Thẻ bị từ chối hoặc quét QR lỗi:} Hệ thống hiển thị popup đỏ ``Giao dịch thất bại'' kèm mã lỗi từ ngân hàng. Hệ thống giữ nguyên hóa đơn để chờ đổi phương thức. \\ \hline
+\end{longtable}

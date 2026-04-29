@@ -13,13 +13,13 @@ COPY shared/common-lib/ shared/common-lib/
 
 # Pre-resolve dependencies for the specific service to leverage Docker cache
 # This layer will only be rebuilt if build.gradle or settings.gradle change
-RUN gradle :services:menu-service:dependencies --no-daemon
+RUN gradle :services:admin-service:dependencies --no-daemon
 
 # Copy the service source code
-COPY services/menu-service/ services/menu-service/
+COPY services/admin-service/ services/admin-service/
 
 # Build the executable bootJar (skip tests for faster CI/CD)
-RUN gradle :services:menu-service:bootJar --no-daemon -x test
+RUN gradle :services:admin-service:bootJar --no-daemon -x test
 
 # Stage 2: Runtime
 FROM eclipse-temurin:17-jre-jammy
@@ -30,12 +30,12 @@ RUN addgroup --system spring && adduser --system spring --ingroup spring
 USER spring:spring
 
 # Copy the built jar from the build stage
-COPY --from=build /app/services/menu-service/build/libs/*-SNAPSHOT.jar app.jar
+COPY --from=build /app/services/admin-service/build/libs/*-SNAPSHOT.jar app.jar
 
 # JVM Performance & Container awareness:
 # - MaxRAMPercentage: Dynamically scale memory based on container limits
 # - ExitOnOutOfMemoryError: Ensure container restarts on heap exhaustion
 ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError"
 
-EXPOSE 8082
+EXPOSE 8081
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]

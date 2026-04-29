@@ -1,7 +1,25 @@
-version: '3.8'
+version: "3.8"
 
 services:
   # --- Core Domain Services ---
+  admin-service:
+    build:
+      context: .
+      dockerfile: services/admin-service/Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/irms_auth
+      - POSTGRES_USER=irms_user
+      - POSTGRES_PASSWORD=irms_pass
+      - JWT_SECRET=404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    restart: on-failure
+    networks:
+      - irms-network
+
   menu-service:
     build:
       context: .
@@ -39,23 +57,23 @@ services:
     networks:
       - irms-network
 
-  redis-cache:
-    image: redis:7
-    ports:
-      - "6379:6379"
-    networks:
-      - irms-network
+  # redis-cache:
+  #   image: redis:7
+  #   ports:
+  #     - "6379:6379"
+  #   networks:
+  #     - irms-network
 
-  rabbitmq:
-    image: rabbitmq:3.12-management
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    environment:
-      - RABBITMQ_DEFAULT_USER=guest
-      - RABBITMQ_DEFAULT_PASS=guest
-    networks:
-      - irms-network
+  # rabbitmq:
+  #   image: rabbitmq:3.12-management
+  #   ports:
+  #     - "5672:5672"
+  #     - "15672:15672"
+  #   environment:
+  #     - RABBITMQ_DEFAULT_USER=guest
+  #     - RABBITMQ_DEFAULT_PASS=guest
+  #   networks:
+  #     - irms-network
 
 networks:
   irms-network:

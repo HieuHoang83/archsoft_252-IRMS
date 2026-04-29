@@ -1,0 +1,187 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\geometry{margin=2cm}
+
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\begin{document}
+
+\section*{1.8. Đặc tả Use Case Scenario (Phần 1: UC 1--5)}
+
+% ============================================================
+\subsection*{Use Case 1: Xem sơ đồ bàn}
+\begin{longtable}{|P{4cm}|P{11cm}|}
+\hline
+\textbf{Thuộc tính} & \textbf{Chi tiết} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Thuộc tính} & \textbf{Chi tiết} \\
+\hline
+\endhead
+Tên Use Case & UC01. Xem sơ đồ bàn để nhận biết bàn trống và bàn đang có khách \\
+\hline
+Actor chính & Nhân viên phục vụ (Server) \\
+\hline
+Mục đích & Giúp nhân viên phục vụ nắm bắt tình trạng các bàn trong nhà hàng (trống, đang phục vụ, chờ dọn dẹp) để hướng dẫn khách hoặc theo dõi tiến độ. \\
+\hline
+Tiền điều kiện & Nhân viên đã đăng nhập vào hệ thống (ứng dụng POS trên máy tính bảng hoặc thiết bị di động). \\
+\hline
+Hậu điều kiện & Nhân viên xác định được trạng thái thực tế của các bàn. \\
+\hline
+Luồng sự kiện chính &
+1. Nhân viên chọn chức năng ``Sơ đồ bàn'' trên màn hình chính.\newline
+2. Hệ thống truy xuất dữ liệu trạng thái bàn từ cơ sở dữ liệu.\newline
+3. Hệ thống hiển thị sơ đồ trực quan, sử dụng màu sắc để phân biệt (xanh = trống, đỏ = đang có khách, vàng = chờ dọn).\newline
+4. Nhân viên xem thông tin, có thể chạm vào một bàn để xem chi tiết. \\
+\hline
+Luồng ngoại lệ &
+\textbf{1a. Lỗi kết nối mạng:} Hệ thống hiển thị thông báo lỗi và cung cấp nút ``Thử lại''.\newline
+\textbf{2a. Bàn không tồn tại:} Hệ thống thông báo ``Bàn không còn tồn tại'' và tự động làm mới sơ đồ. \\
+\hline
+\end{longtable}
+
+% ============================================================
+\subsection*{Use Case 2: Ghi nhận đơn đặt món mới}
+\begin{longtable}{|P{4cm}|P{11cm}|}
+\hline
+\textbf{Thuộc tính} & \textbf{Chi tiết} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Thuộc tính} & \textbf{Chi tiết} \\
+\hline
+\endhead
+Tên Use Case & UC02. Ghi nhận đơn đặt món (Order) mới từ khách hàng \\
+\hline
+Actor chính & Nhân viên phục vụ (Server) \\
+\hline
+Mục đích & Tạo một đơn hàng mới ghi nhận các món ăn, thức uống khách hàng yêu cầu tại bàn. \\
+\hline
+Tiền điều kiện & Nhân viên đã đăng nhập; bàn đã được gắn trạng thái ``Đang có khách'' (Occupied). \\
+\hline
+Hậu điều kiện & Một đơn hàng mới được tạo thành công và lưu vào hệ thống dưới trạng thái ``Đang chọn món'' (Draft/Pending). \\
+\hline
+Luồng sự kiện chính &
+1. Nhân viên chọn bàn và nhấn ``Tạo đơn hàng''.\newline
+2. Hệ thống hiển thị giao diện thực đơn điện tử.\newline
+3. Nhân viên bấm chọn các món tương ứng.\newline
+4. Hệ thống hiển thị danh sách món đã chọn kèm tổng tiền tạm tính.\newline
+5. Nhân viên xác nhận và nhấn ``Lưu đơn hàng''.\newline
+6. Hệ thống lưu trữ đơn hàng và thông báo thành công. \\
+\hline
+Luồng ngoại lệ &
+\textbf{3a. Món ăn đã hết hàng:} Hệ thống làm mờ nút chọn và hiển thị nhãn ``Hết hàng''.\newline
+\textbf{5a. Khách hủy toàn bộ:} Nhân viên nhấn ``Hủy đơn đang tạo''. Hệ thống xóa dữ liệu tạm. \\
+\hline
+\end{longtable}
+
+% ============================================================
+\subsection*{Use Case 3: Ghi chú yêu cầu tùy chỉnh hoặc dị ứng thực phẩm}
+\begin{longtable}{|P{4cm}|P{11cm}|}
+\hline
+\textbf{Thuộc tính} & \textbf{Chi tiết} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Thuộc tính} & \textbf{Chi tiết} \\
+\hline
+\endhead
+Tên Use Case & UC03. Ghi chú các yêu cầu tùy chỉnh hoặc thông tin dị ứng thực phẩm vào đơn hàng \\
+\hline
+Actor chính & Nhân viên phục vụ (Server) \\
+\hline
+Mục đích & Bổ sung các thông tin quan trọng (không hành, ít cay, dị ứng đậu phộng) vào một món ăn cụ thể trong đơn. \\
+\hline
+Tiền điều kiện & Đơn hàng chưa được gửi xuống bếp; món ăn đã được chọn vào danh sách. \\
+\hline
+Hậu điều kiện & Ghi chú được đính kèm vào món ăn và sẵn sàng để truyền xuống bếp. \\
+\hline
+Luồng sự kiện chính &
+1. Nhân viên chọn một món ăn cụ thể cần ghi chú.\newline
+2. Hệ thống hiển thị popup với các tùy chọn modifier và ô nhập văn bản tự do.\newline
+3. Nhân viên tick chọn modifier hoặc gõ ghi chú dị ứng.\newline
+4. Nhân viên nhấn ``Xác nhận''.\newline
+5. Hệ thống cập nhật chi tiết món ăn, hiển thị ghi chú bằng màu nổi bật. \\
+\hline
+Luồng ngoại lệ &
+\textbf{4a. Nhập ký tự quá dài:} Hệ thống báo lỗi ``Ghi chú tối đa 100 ký tự'' và yêu cầu nhập lại. \\
+\hline
+\end{longtable}
+
+% ============================================================
+\subsection*{Use Case 4: Điều chỉnh hoặc hủy món ăn khi bếp chưa chế biến}
+\begin{longtable}{|P{4cm}|P{11cm}|}
+\hline
+\textbf{Thuộc tính} & \textbf{Chi tiết} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Thuộc tính} & \textbf{Chi tiết} \\
+\hline
+\endhead
+Tên Use Case & UC04. Điều chỉnh hoặc hủy món ăn trong đơn hàng khi bếp chưa bắt đầu chế biến \\
+\hline
+Actor chính & Nhân viên phục vụ (Server) \\
+\hline
+Mục đích & Thay đổi số lượng hoặc xóa bỏ món ăn nếu khách hàng đổi ý trước khi bếp tiến hành nấu. \\
+\hline
+Tiền điều kiện & Đơn hàng đã được tạo; trạng thái món ăn là ``Đang chờ'' (Pending) hoặc ``Đã tiếp nhận'' (Received), CHƯA chuyển sang ``Đang chế biến'' (Cooking). \\
+\hline
+Hậu điều kiện & Đơn hàng được cập nhật và tổng tiền được tính toán lại. Bếp được cập nhật nếu đơn đã gửi đi. \\
+\hline
+Luồng sự kiện chính &
+1. Nhân viên mở chi tiết đơn hàng cần chỉnh sửa.\newline
+2. Hệ thống kiểm tra và hiển thị trạng thái từng món.\newline
+3. Nhân viên nhấn nút ``-'' hoặc ``Xóa'' cạnh món muốn hủy.\newline
+4. Hệ thống xác nhận món chưa bị bếp nấu.\newline
+5. Hệ thống xóa/giảm số lượng món, cập nhật lại tổng tiền.\newline
+6. Hệ thống gửi thông báo cập nhật lên màn hình KDS (nếu đơn đã gửi bếp). \\
+\hline
+Luồng ngoại lệ &
+\textbf{4a. Bếp đã bắt đầu chế biến:} Hệ thống từ chối thao tác và hiện thông báo yêu cầu liên hệ Quản lý. \\
+\hline
+\end{longtable}
+
+% ============================================================
+\subsection*{Use Case 5: Gửi yêu cầu chuẩn bị món xuống KDS}
+\begin{longtable}{|P{4cm}|P{11cm}|}
+\hline
+\textbf{Thuộc tính} & \textbf{Chi tiết} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Thuộc tính} & \textbf{Chi tiết} \\
+\hline
+\endhead
+Tên Use Case & UC05. Gửi yêu cầu chuẩn bị món ăn xuống hệ thống hiển thị bếp (KDS) \\
+\hline
+Actor chính & Nhân viên phục vụ (Server) \\
+\hline
+Mục đích & Chuyển thông tin các món đã chốt xuống bộ phận bếp để bắt đầu chuẩn bị. \\
+\hline
+Tiền điều kiện & Đơn hàng có ít nhất một món; nhân viên và khách đã chốt danh sách; hệ thống KDS đang hoạt động. \\
+\hline
+Hậu điều kiện & Các món được phân phối đến đúng màn hình trạm bếp; trạng thái đơn đổi thành ``Đã chuyển bếp''. \\
+\hline
+Luồng sự kiện chính &
+1. Nhân viên nhấn nút ``Gửi Bếp'' (Send to Kitchen).\newline
+2. Hệ thống phân tích danh sách món và phân loại về đúng trạm.\newline
+3. Hệ thống tạo phiếu nấu số hóa và truyền tới các màn hình KDS.\newline
+4. Hệ thống cập nhật trạng thái đơn thành ``Đã chuyển bếp''.\newline
+5. Màn hình nhân viên hiển thị ``Đã gửi yêu cầu thành công''. \\
+\hline
+Luồng ngoại lệ &
+\textbf{3a. KDS mất kết nối:} Hệ thống cảnh báo và lưu tạm trạng thái ``Chờ gửi'', tự động retry ngầm. \\
+\hline
+\end{longtable}
+
+\end{document}

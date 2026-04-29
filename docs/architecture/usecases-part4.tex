@@ -1,0 +1,166 @@
+% ============================================================
+% PART 4: UC23 - UC30
+% ============================================================
+
+\subsection*{Use Case 23: Ghi nhận số tiền tip}
+\begin{longtable}{|P{4cm}|P{11cm}|}
+\hline
+\textbf{Thuộc tính} & \textbf{Chi tiết} \\ \hline \endfirsthead
+\hline \textbf{Thuộc tính} & \textbf{Chi tiết} \\ \hline \endhead
+Tên Use Case & UC23. Ghi nhận số tiền tip của khách hàng vào hệ thống thanh toán \\ \hline
+Actor chính & Thu ngân (Cashiers) \\ \hline
+Mục đích & Lưu vết số tiền khách bo (tip) thêm ngoài hóa đơn để báo cáo doanh thu và phân chia cho nhân viên vào cuối ngày. \\ \hline
+Tiền điều kiện & Đơn hàng đang được thanh toán bằng Thẻ tín dụng hoặc khách đưa dư tiền mặt và bảo giữ lại làm tip. \\ \hline
+Hậu điều kiện & Số tiền Tip được ghi nhận riêng biệt so với Doanh thu bán hàng, phục vụ cho báo cáo tài chính. \\ \hline
+Luồng sự kiện chính &
+1. Trước khi chốt giao dịch thẻ, hệ thống hiển thị màn hình yêu cầu nhập số tiền Tip.\newline
+2. Khách hàng chọn \% tip hoặc nhập số tiền trên màn hình phụ (Customer Display).\newline
+3. Thu ngân (hoặc khách) nhập con số đó vào ô ``Tiền Tip'' trên POS.\newline
+4. Hệ thống cộng dồn tiền món ăn và tiền tip để ra tổng số tiền thực tế trừ vào thẻ.\newline
+5. Hệ thống ghi nhận giao dịch: Tách rõ phần ``Doanh thu món'' và ``Quỹ Tip''. \\ \hline
+Luồng ngoại lệ &
+\textbf{3a. Nhập nhầm tiền Tip quá lớn:} Nếu Tip lớn hơn 50\% giá trị hóa đơn, hệ thống bật popup cảnh báo ``Số tiền tip bất thường. Xác nhận?''. Thu ngân phải kiểm tra lại với khách trước khi tiếp tục. \\ \hline
+\end{longtable}
+
+\subsection*{Use Case 24: Thêm, sửa, xóa món ăn trong thực đơn}
+\begin{longtable}{|P{4cm}|P{11cm}|}
+\hline
+\textbf{Thuộc tính} & \textbf{Chi tiết} \\ \hline \endfirsthead
+\hline \textbf{Thuộc tính} & \textbf{Chi tiết} \\ \hline \endhead
+Tên Use Case & UC24. Thêm, sửa, xóa các món ăn trong thực đơn và cấu hình giá bán \\ \hline
+Actor chính & Quản lý (Managers) \\ \hline
+Mục đích & Cập nhật bộ thực đơn cốt lõi của nhà hàng (thêm món mới theo mùa, đổi giá) để POS và KDS đồng bộ ngay lập tức. \\ \hline
+Tiền điều kiện & Quản lý đã đăng nhập vào hệ thống Admin Web với quyền ``Admin'' hoặc ``Manager''. \\ \hline
+Hậu điều kiện & Cơ sở dữ liệu thực đơn được cập nhật; mọi thiết bị POS/App tự động tải về thực đơn mới nhất. \\ \hline
+Luồng sự kiện chính &
+1. Quản lý truy cập mục ``Quản lý Thực đơn'' (Menu Management).\newline
+2. Quản lý nhấn ``Thêm món mới'' hoặc chọn một món hiện có để ``Sửa''.\newline
+3. Hệ thống hiển thị biểu mẫu chi tiết: Tên món, Hình ảnh, Mô tả, Giá bán, Phân loại, Trạm bếp phụ trách.\newline
+4. Quản lý nhập thông tin và nhấn ``Lưu thay đổi''.\newline
+5. Hệ thống lưu vào Database và phát broadcast event báo cho tất cả thiết bị POS tải lại cache (Menu sync). \\ \hline
+Luồng ngoại lệ &
+\textbf{4a. Xóa món đang nằm trong đơn hàng chưa phục vụ xong:} Hệ thống chặn lệnh Xóa và báo lỗi, yêu cầu chuyển sang trạng thái ``Ẩn/Hết hàng'' tạm thời. \\ \hline
+\end{longtable}
+
+\subsection*{Use Case 25: Đánh dấu món ăn ``hết hàng'' theo thời gian thực}
+\begin{longtable}{|P{4cm}|P{11cm}|}
+\hline
+\textbf{Thuộc tính} & \textbf{Chi tiết} \\ \hline \endfirsthead
+\hline \textbf{Thuộc tính} & \textbf{Chi tiết} \\ \hline \endhead
+Tên Use Case & UC25. Đánh dấu món ăn ``hết hàng'' trên thực đơn theo thời gian thực \\ \hline
+Actor chính & Quản lý (Managers) / Đầu bếp trưởng (Head Chef) \\ \hline
+Mục đích & Ngăn chặn nhân viên phục vụ tiếp tục order món ăn đã hết nguyên liệu dưới bếp, tránh việc phải ra bàn xin lỗi khách. \\ \hline
+Tiền điều kiện & Người dùng có quyền ``Cập nhật trạng thái thực đơn''. \\ \hline
+Hậu điều kiện & Món ăn bị làm mờ (gray out) trên tất cả các màn hình gọi món, nhân viên không thể bấm chọn. \\ \hline
+Luồng sự kiện chính &
+1. Đầu bếp báo hết nguyên liệu cho Quản lý, hoặc Quản lý tự nhận thấy qua cảnh báo tồn kho.\newline
+2. Quản lý mở POS hoặc Admin Web, vào chức năng ``Trạng thái Menu 86'' (Menu 86 / Sold out).\newline
+3. Quản lý tìm món ăn và bật công tắc từ ``Còn hàng'' (In stock) sang ``Hết hàng'' (Sold out).\newline
+4. Hệ thống ngay lập tức đẩy bản cập nhật xuống tất cả các iPad/POS đang mở.\newline
+5. Món ăn tự động hiển thị mờ đi kèm chữ ``Hết hàng'' không thể bấm chọn. \\ \hline
+Luồng ngoại lệ &
+\textbf{3a. Hết hàng có định mức (Chỉ còn 5 phần):} Quản lý chọn ``Giới hạn số lượng'' và nhập số ``5''. Hệ thống đếm lùi trên POS mỗi khi nhân viên order món đó, về 0 sẽ tự động khóa lại. \\ \hline
+\end{longtable}
+
+\section*{1.13. Đặc tả Use Case Scenario (Phần 6: UC 26--30)}
+
+\subsection*{Use Case 26: Theo dõi cảnh báo hàng tồn kho dưới ngưỡng an toàn}
+\begin{longtable}{|P{4cm}|P{11cm}|}
+\hline
+\textbf{Thuộc tính} & \textbf{Chi tiết} \\ \hline \endfirsthead
+\hline \textbf{Thuộc tính} & \textbf{Chi tiết} \\ \hline \endhead
+Tên Use Case & UC26. Theo dõi cảnh báo hàng tồn kho khi mức nguyên liệu xuống dưới ngưỡng an toàn \\ \hline
+Actor chính & Quản lý (Managers) \\ \hline
+Mục đích & Đảm bảo nhà hàng luôn có đủ nguyên liệu bằng cách nhắc nhở Quản lý đặt hàng kịp thời trước khi cạn kiệt. \\ \hline
+Tiền điều kiện & Module Quản lý Tồn kho đã được thiết lập mức ``Ngưỡng an toàn'' (Reorder level) cho từng loại nguyên liệu. \\ \hline
+Hậu điều kiện & Quản lý nhận được thông tin để lên kế hoạch nhập hàng mới. \\ \hline
+Luồng sự kiện chính &
+1. Hệ thống liên tục ghi nhận lượng nguyên liệu bị trừ đi sau mỗi lần bán món hoặc trừ thủ công từ bếp.\newline
+2. Ngay khi số lượng nguyên liệu giảm xuống dưới ngưỡng an toàn, hệ thống tạo cảnh báo tự động.\newline
+3. Hệ thống hiển thị cảnh báo trên màn hình Dashboard của Admin Web.\newline
+4. (Tuỳ chọn) Hệ thống gửi email hoặc thông báo qua App quản lý nội dung.\newline
+5. Quản lý xem cảnh báo, nhấn vào để xem lịch sử tiêu thụ và dự đoán thời gian cạn kiệt. \\ \hline
+Luồng ngoại lệ &
+\textbf{1a. Lỗi sai lệch định lượng:} Nếu tồn kho thực tế khác với hệ thống (do hao hụt không khai báo), cảnh báo có thể hiển thị muộn. Quản lý phải dùng chức năng ``Kiểm kê kho'' (Stock-take) để điều chỉnh lại. \\ \hline
+\end{longtable}
+
+\subsection*{Use Case 27: Xem báo cáo phân tích doanh thu}
+\begin{longtable}{|P{4cm}|P{11cm}|}
+\hline
+\textbf{Thuộc tính} & \textbf{Chi tiết} \\ \hline \endfirsthead
+\hline \textbf{Thuộc tính} & \textbf{Chi tiết} \\ \hline \endhead
+Tên Use Case & UC27. Xem báo cáo phân tích doanh thu theo giờ cao điểm và món bán chạy \\ \hline
+Actor chính & Quản lý (Managers) \\ \hline
+Mục đích & Cung cấp cái nhìn tổng quan về hiệu quả kinh doanh, giúp Quản lý đưa ra quyết định thay đổi menu hoặc tăng cường nhân sự. \\ \hline
+Tiền điều kiện & Quản lý đã đăng nhập; có đủ dữ liệu giao dịch từ module Thanh toán trong khoảng thời gian muốn xem. \\ \hline
+Hậu điều kiện & Báo cáo trực quan (biểu đồ) được hiển thị hoặc xuất ra file thành công. \\ \hline
+Luồng sự kiện chính &
+1. Quản lý truy cập vào module ``Báo cáo \& Phân tích'' (Analytics \& Reports).\newline
+2. Chọn loại báo cáo ``Doanh thu'' và thiết lập bộ lọc (Hôm nay, Tuần này, Tháng này).\newline
+3. Hệ thống truy vấn dữ liệu từ cơ sở dữ liệu báo cáo (Reporting DB) để không ảnh hưởng đến DB giao dịch.\newline
+4. Hệ thống vẽ biểu đồ doanh thu theo khung giờ và biểu đồ Top 5 món bán chạy nhất.\newline
+5. Quản lý xem xét biểu đồ, có thể di chuột vào để xem con số chi tiết. \\ \hline
+Luồng ngoại lệ &
+\textbf{3a. Dữ liệu quá lớn gây tải chậm:} Hệ thống hiển thị thanh tiến trình (Loading bar) và thông báo ``Đang tổng hợp dữ liệu, vui lòng chờ...''. \\ \hline
+\end{longtable}
+
+\subsection*{Use Case 28: Phân tích hiệu suất nhân viên và độ trễ phục vụ}
+\begin{longtable}{|P{4cm}|P{11cm}|}
+\hline
+\textbf{Thuộc tính} & \textbf{Chi tiết} \\ \hline \endfirsthead
+\hline \textbf{Thuộc tính} & \textbf{Chi tiết} \\ \hline \endhead
+Tên Use Case & UC28. Phân tích đánh giá hiệu suất nhân viên và độ trễ phục vụ tại bếp \\ \hline
+Actor chính & Quản lý (Managers) \\ \hline
+Mục đích & Phát hiện các nút thắt cổ chai (bottlenecks) trong vận hành, đánh giá đầu bếp nào làm việc nhanh nhất và nhân viên xử lý đơn tốt nhất. \\ \hline
+Tiền điều kiện & Hệ thống lưu trữ đầy đủ tem thời gian (timestamps) của mọi hành động trên POS và KDS. \\ \hline
+Hậu điều kiện & Báo cáo hiệu suất vận hành (Operational Analytics) được xuất ra chi tiết. \\ \hline
+Luồng sự kiện chính &
+1. Quản lý chọn tab ``Hiệu suất Vận hành'' trong module Báo cáo.\newline
+2. Hệ thống tổng hợp các chỉ số: Thời gian trung bình từ ``Chờ chế biến'' đến ``Sẵn sàng'' (Prep Time) và từ ``Sẵn sàng'' đến ``Đã phục vụ'' (Service Time).\newline
+3. Hệ thống nhóm dữ liệu theo từng Trạm bếp hoặc từng Nhân viên (Staff ID).\newline
+4. Hệ thống hiển thị bảng xếp hạng, tô đỏ các trạm có tỷ lệ trễ SLA cao nhất.\newline
+5. Quản lý dùng thông tin này để đào tạo lại hoặc sắp xếp lại nhân sự trong ca làm. \\ \hline
+Luồng ngoại lệ &
+\textbf{2a. Dữ liệu nhiễu (Nhân viên quên bấm nút hoàn thành):} Hệ thống tự động loại bỏ các giá trị ngoại lai (outliers) khỏi công thức tính trung bình để báo cáo không bị sai lệch. \\ \hline
+\end{longtable}
+
+\subsection*{Use Case 29: Phân quyền và cấp tài khoản truy cập}
+\begin{longtable}{|P{4cm}|P{11cm}|}
+\hline
+\textbf{Thuộc tính} & \textbf{Chi tiết} \\ \hline \endfirsthead
+\hline \textbf{Thuộc tính} & \textbf{Chi tiết} \\ \hline \endhead
+Tên Use Case & UC29. Phân quyền và cấp tài khoản truy cập cho từng vai trò nhân sự \\ \hline
+Actor chính & Quản lý (Managers) / Quản trị hệ thống (Admin) \\ \hline
+Mục đích & Đảm bảo tính bảo mật của hệ thống bằng cách kiểm soát quyền truy cập dựa trên vai trò (Role-Based Access Control -- RBAC). \\ \hline
+Tiền điều kiện & Quản lý đăng nhập bằng tài khoản có đặc quyền cao nhất (Super Admin / Manager). \\ \hline
+Hậu điều kiện & Tài khoản mới được tạo hoặc quyền của tài khoản cũ được thay đổi, có hiệu lực ngay trong lần đăng nhập tiếp theo. \\ \hline
+Luồng sự kiện chính &
+1. Quản lý truy cập chức năng ``Quản lý Nhân sự / Tài khoản''.\newline
+2. Quản lý nhấn ``Tạo tài khoản mới'' và nhập thông tin (Tên, Mã NV, Mật khẩu tạm).\newline
+3. Quản lý gán vai trò (Role) cho tài khoản, ví dụ chọn ``Thu ngân''.\newline
+4. Hệ thống tự động ánh xạ vai trò với các nhóm quyền cụ thể.\newline
+5. Quản lý nhấn ``Lưu''.\newline
+6. Hệ thống tạo tài khoản trong cơ sở dữ liệu và nhân viên có thể dùng ngay lập tức. \\ \hline
+Luồng ngoại lệ &
+\textbf{3a. Trùng lặp ID Nhân viên:} Hệ thống cảnh báo ``Mã Nhân viên này đã tồn tại trong hệ thống. Vui lòng nhập mã khác''. Khóa nút Lưu cho đến khi nhập đúng. \\ \hline
+\end{longtable}
+
+\subsection*{Use Case 30: Truy xuất nhật ký kiểm toán (Audit Logs)}
+\begin{longtable}{|P{4cm}|P{11cm}|}
+\hline
+\textbf{Thuộc tính} & \textbf{Chi tiết} \\ \hline \endfirsthead
+\hline \textbf{Thuộc tính} & \textbf{Chi tiết} \\ \hline \endhead
+Tên Use Case & UC30. Truy xuất nhật ký kiểm toán (Audit Logs) để rà soát các thao tác hủy đơn và hoàn tiền \\ \hline
+Actor chính & Quản lý (Managers) / Kế toán (Accountant) \\ \hline
+Mục đích & Phát hiện và ngăn ngừa gian lận, đảm bảo tính minh bạch (ví dụ: nhân viên cố tình xóa đơn hàng đã thu tiền khách). \\ \hline
+Tiền điều kiện & Người dùng có quyền truy cập module ``Nhật ký Hệ thống'' (Audit Logs). Hệ thống đã bật chức năng ghi log cho mọi thao tác nhạy cảm. \\ \hline
+Hậu điều kiện & Quản lý xem được lịch sử chi tiết ``Ai đã làm gì, vào lúc nào'' để đối soát. \\ \hline
+Luồng sự kiện chính &
+1. Quản lý truy cập chức năng ``Nhật ký Kiểm toán''.\newline
+2. Quản lý thiết lập bộ lọc: Hành động = ``Hủy đơn'' (Void) hoặc ``Hoàn tiền'' (Refund); Khung thời gian = ``Hôm qua''.\newline
+3. Hệ thống trả về danh sách các sự kiện khớp với bộ lọc.\newline
+4. Quản lý nhấn vào một dòng bất kỳ để xem chi tiết.\newline
+5. Hệ thống hiển thị: Người thực hiện, Thời gian chính xác, Lý do hủy, ID Đơn hàng bị ảnh hưởng, và Quản lý nào đã duyệt. \\ \hline
+Luồng ngoại lệ &
+\textbf{3a. Hành vi đáng ngờ số lượng lớn:} Nếu một nhân viên có hơn 3 lượt hủy đơn trong cùng 1 ca làm, hệ thống bôi đỏ tên nhân viên đó trên dòng log để Quản lý đặc biệt chú ý kiểm tra. \\ \hline
+\end{longtable}
