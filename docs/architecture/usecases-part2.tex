@@ -1,327 +1,208 @@
-% ============================================================
 % PART 2: UC06 - UC15
-% ============================================================
-
 \section*{1.9. Đặc tả Use Case Scenario (Phần 2: UC 6--10)}
 
-\subsection*{Use Case 6: Theo dõi trạng thái tiến độ chuẩn bị món ăn}
-\begin{longtable}{|P{4cm}|P{11cm}|}
+\begin{longtable}{|L{3.5cm}|L{12.5cm}|}
 \hline
-\textbf{Thuộc tính} & \textbf{Chi tiết} \\
-\hline
-\endfirsthead
-\hline
-\textbf{Thuộc tính} & \textbf{Chi tiết} \\
-\hline
-\endhead
-Tên Use Case & UC06. Theo dõi trạng thái tiến độ chuẩn bị món ăn của từng bàn \\
-\hline
-Actor chính & Nhân viên phục vụ (Server) \\
-\hline
-Mục đích & Cho phép nhân viên biết được tiến độ món ăn dưới bếp để phản hồi cho khách khi được hỏi. \\
-\hline
-Tiền điều kiện & Đơn hàng đã được gửi xuống bếp thành công (Trạng thái: Đã chuyển bếp). \\
-\hline
-Hậu điều kiện & Nhân viên nhận biết được trạng thái mới nhất của các món ăn. \\
-\hline
-Luồng sự kiện chính &
+\textbf{Use Case ID} & UC06 \\ \hline
+\textbf{Use Case Name} & Theo dõi trạng thái tiến độ chuẩn bị món ăn của từng bàn \\ \hline
+\textbf{Primary Actors} & Nhân viên phục vụ (Server) \\ \hline
+\textbf{Description} & Cho phép nhân viên biết được tiến độ món ăn dưới bếp để phản hồi cho khách khi được hỏi. \\ \hline
+\textbf{Trigger} & Nhân viên chọn bàn cần kiểm tra tiến độ trên giao diện POS. \\ \hline
+\textbf{Preconditions} & $\bullet$ Đơn hàng đã được gửi xuống bếp thành công (Trạng thái: Đã chuyển bếp). \\ \hline
+\textbf{Postconditions} & $\bullet$ Nhân viên nhận biết được trạng thái mới nhất của các món ăn. \\ \hline
+\textbf{Normal Flow} &
 1. Nhân viên chọn bàn cần kiểm tra trên giao diện POS.\newline
 2. Hệ thống truy vấn trạng thái đồng bộ hóa từ KDS.\newline
-3. Hệ thống hiển thị danh sách món kèm nhãn trạng thái (Chờ, Đang chế biến, Sẵn sàng phục vụ).\newline
-4. Nhân viên xem màn hình để nắm thông tin tiến độ. \\
-\hline
-Luồng ngoại lệ &
-\textbf{2a. Bếp chưa cập nhật:} Hệ thống tiếp tục hiển thị trạng thái cũ nhất.\newline
-\textbf{2b. Mất kết nối KDS:} Hệ thống hiển thị cảnh báo ``Trạng thái có thể không chính xác'' kèm thời gian cập nhật lần cuối. \\
-\hline
+3. Hệ thống hiển thị danh sách các món ăn kèm nhãn trạng thái (Chờ chế biến, Đang chế biến, Sẵn sàng phục vụ).\newline
+4. Nhân viên xem màn hình để nắm thông tin tiến độ tổng thể. \\ \hline
+\textbf{Alternative Flows} &
+\textbf{2a. Bếp chưa cập nhật trạng thái:} Hệ thống tiếp tục hiển thị trạng thái cũ nhất (Chờ chế biến).\newline
+\textbf{2b. Mất kết nối với KDS:} Hệ thống hiển thị cảnh báo ``Trạng thái có thể không chính xác do mất kết nối với Bếp'' cùng thời gian cập nhật lần cuối. \\ \hline
 \end{longtable}
 
-\subsection*{Use Case 7: Cập nhật trạng thái ``Đã phục vụ''}
-\begin{longtable}{|P{4cm}|P{11cm}|}
+\begin{longtable}{|L{3.5cm}|L{12.5cm}|}
 \hline
-\textbf{Thuộc tính} & \textbf{Chi tiết} \\
-\hline
-\endfirsthead
-\hline
-\textbf{Thuộc tính} & \textbf{Chi tiết} \\
-\hline
-\endhead
-Tên Use Case & UC07. Cập nhật trạng thái ``Đã phục vụ'' sau khi mang món ăn lên cho khách \\
-\hline
-Actor chính & Nhân viên phục vụ (Server) \\
-\hline
-Mục đích & Đánh dấu các món đã được giao đến tận bàn, giúp hoàn tất quy trình phục vụ của một món ăn. \\
-\hline
-Tiền điều kiện & Món ăn đã ở trạng thái ``Sẵn sàng phục vụ'' từ bếp và nhân viên đã mang ra bàn. \\
-\hline
-Hậu điều kiện & Món ăn được cập nhật thành ``Đã phục vụ'' (Served), hỗ trợ chính xác cho việc in hóa đơn. \\
-\hline
-Luồng sự kiện chính &
-1. Sau khi đặt món xuống bàn, nhân viên mở giao diện đơn hàng trên POS.\newline
+\textbf{Use Case ID} & UC07 \\ \hline
+\textbf{Use Case Name} & Cập nhật trạng thái ``Đã phục vụ'' sau khi mang món ăn lên cho khách \\ \hline
+\textbf{Primary Actors} & Nhân viên phục vụ (Server) \\ \hline
+\textbf{Description} & Đánh dấu các món đã được giao đến tận bàn cho khách, giúp hoàn tất quy trình phục vụ của một món ăn. \\ \hline
+\textbf{Trigger} & Nhân viên mang món ăn ra bàn và cần cập nhật trạng thái trên POS. \\ \hline
+\textbf{Preconditions} &
+$\bullet$ Món ăn đã ở trạng thái ``Sẵn sàng phục vụ'' (Ready to Serve) từ bếp.\newline
+$\bullet$ Nhân viên đã mang món ra bàn. \\ \hline
+\textbf{Postconditions} & $\bullet$ Món ăn được cập nhật thành ``Đã phục vụ'' (Served), hỗ trợ chính xác cho việc in hóa đơn sau này. \\ \hline
+\textbf{Normal Flow} &
+1. Sau khi đặt món xuống bàn, nhân viên mở giao diện đơn hàng của bàn đó trên POS.\newline
 2. Hệ thống hiển thị các món đang chờ phục vụ.\newline
-3. Nhân viên đánh dấu tick vào món ăn vừa mang ra.\newline
+3. Nhân viên đánh dấu tick (hoặc lướt) vào món ăn vừa mang ra.\newline
 4. Hệ thống cập nhật trạng thái món thành ``Đã phục vụ'' và lưu vào cơ sở dữ liệu.\newline
-5. Hệ thống ẩn món khỏi danh sách ``Cần phục vụ''. \\
-\hline
-Luồng ngoại lệ &
-\textbf{3a. Đánh dấu nhầm món:} Nhân viên nhấn ``Hoàn tác'' (Undo). Hệ thống đưa món về trạng thái ``Sẵn sàng phục vụ''. \\
-\hline
+5. Hệ thống ẩn món ăn đó khỏi danh sách ``Cần phục vụ'' trên màn hình. \\ \hline
+\textbf{Alternative Flows} &
+\textbf{3a. Đánh dấu nhầm món:} Nhân viên nhấn nút ``Hoàn tác'' (Undo) ngay cạnh món ăn vừa đánh dấu. Hệ thống đưa món về trạng thái ``Sẵn sàng phục vụ''. \\ \hline
 \end{longtable}
 
-\subsection*{Use Case 8: Quản lý danh sách đặt bàn trước}
-\begin{longtable}{|P{4cm}|P{11cm}|}
+\begin{longtable}{|L{3.5cm}|L{12.5cm}|}
 \hline
-\textbf{Thuộc tính} & \textbf{Chi tiết} \\
-\hline
-\endfirsthead
-\hline
-\textbf{Thuộc tính} & \textbf{Chi tiết} \\
-\hline
-\endhead
-Tên Use Case & UC08. Quản lý danh sách đặt bàn trước của khách hàng \\
-\hline
-Actor chính & Tiếp tân (Host) \\
-\hline
-Mục đích & Tạo, sửa, hủy các yêu cầu đặt bàn trước (Reservation) để đảm bảo có đủ chỗ ngồi đúng thời gian yêu cầu. \\
-\hline
-Tiền điều kiện & Tiếp tân đã đăng nhập vào module Quản lý Đặt chỗ (Reservation Module). \\
-\hline
-Hậu điều kiện & Yêu cầu đặt bàn được cập nhật vào lịch nhà hàng và bàn được giữ chỗ tương ứng. \\
-\hline
-Luồng sự kiện chính &
+\textbf{Use Case ID} & UC08 \\ \hline
+\textbf{Use Case Name} & Quản lý danh sách đặt bàn trước của khách hàng \\ \hline
+\textbf{Primary Actors} & Tiếp tân (Host) \\ \hline
+\textbf{Description} & Tạo, sửa, hủy các yêu cầu đặt bàn trước (Reservation) để đảm bảo có đủ chỗ ngồi theo đúng thời gian yêu cầu. \\ \hline
+\textbf{Trigger} & Tiếp tân nhận yêu cầu đặt bàn từ khách và chọn chức năng ``Đặt bàn mới''. \\ \hline
+\textbf{Preconditions} & $\bullet$ Tiếp tân đã đăng nhập vào module Quản lý Đặt chỗ (Reservation Module). \\ \hline
+\textbf{Postconditions} &
+$\bullet$ Yêu cầu đặt bàn được cập nhật vào lịch của nhà hàng.\newline
+$\bullet$ Bàn được giữ chỗ tương ứng. \\ \hline
+\textbf{Normal Flow} &
 1. Tiếp tân chọn chức năng ``Đặt bàn mới''.\newline
-2. Hệ thống hiển thị form điền thông tin (Tên khách, SĐT, Giờ đến, Số người, Ghi chú).\newline
-3. Tiếp tân nhập thông tin và nhấn ``Kiểm tra chỗ trống''.\newline
-4. Hệ thống đề xuất các bàn phù hợp trong khung giờ.\newline
+2. Hệ thống hiển thị form điền thông tin (Tên khách, SĐT, Giờ đến, Số lượng người, Ghi chú đặc biệt).\newline
+3. Tiếp tân nhập thông tin khách cung cấp và nhấn ``Kiểm tra chỗ trống''.\newline
+4. Hệ thống kiểm tra dữ liệu sơ đồ bàn trong khung giờ đó và đề xuất các bàn phù hợp.\newline
 5. Tiếp tân chọn bàn và nhấn ``Xác nhận đặt bàn''.\newline
-6. Hệ thống lưu và gửi SMS/Email tự động đến khách hàng. \\
-\hline
-Luồng ngoại lệ &
-\textbf{4a. Hết bàn trống trong khung giờ:} Hệ thống cảnh báo. Tiếp tân đề xuất giờ khác hoặc chuyển khách vào danh sách chờ. \\
-\hline
+6. Hệ thống lưu trạng thái đặt chỗ, gửi tin nhắn SMS/Email tự động (nếu có tích hợp) đến khách hàng. \\ \hline
+\textbf{Alternative Flows} &
+\textbf{4a. Nhà hàng đã hết bàn trống trong khung giờ:} Hệ thống cảnh báo ``Không đủ bàn trống cho khung giờ này''. Tiếp tân có thể đề xuất giờ khác hoặc chuyển khách vào danh sách chờ. \\ \hline
 \end{longtable}
 
-\subsection*{Use Case 9: Ghi nhận khách hàng vào danh sách chờ (Waitlist)}
-\begin{longtable}{|P{4cm}|P{11cm}|}
+\begin{longtable}{|L{3.5cm}|L{12.5cm}|}
 \hline
-\textbf{Thuộc tính} & \textbf{Chi tiết} \\
-\hline
-\endfirsthead
-\hline
-\textbf{Thuộc tính} & \textbf{Chi tiết} \\
-\hline
-\endhead
-Tên Use Case & UC09. Ghi nhận thông tin khách hàng vào danh sách chờ (Waitlist) \\
-\hline
-Actor chính & Tiếp tân (Host) \\
-\hline
-Mục đích & Đưa khách hàng vãng lai vào danh sách chờ khi nhà hàng hết bàn, quản lý hàng đợi một cách công bằng. \\
-\hline
-Tiền điều kiện & Nhà hàng đang trong tình trạng kín bàn (hết bàn trống). \\
-\hline
-Hậu điều kiện & Khách hàng được thêm vào hàng đợi với số thứ tự và thời gian chờ dự kiến. \\
-\hline
-Luồng sự kiện chính &
+\textbf{Use Case ID} & UC09 \\ \hline
+\textbf{Use Case Name} & Ghi nhận thông tin khách hàng vào danh sách chờ (Waitlist) \\ \hline
+\textbf{Primary Actors} & Tiếp tân (Host) \\ \hline
+\textbf{Description} & Đưa khách hàng vãng lai vào danh sách chờ khi nhà hàng đang hết bàn, giúp quản lý hàng đợi một cách công bằng. \\ \hline
+\textbf{Trigger} & Khách vãng lai đến nhà hàng khi đang kín bàn và tiếp tân mở màn hình ``Danh sách chờ''. \\ \hline
+\textbf{Preconditions} & $\bullet$ Nhà hàng đang trong tình trạng kín bàn (hết bàn trống). \\ \hline
+\textbf{Postconditions} &
+$\bullet$ Khách hàng được thêm vào hàng đợi với số thứ tự và thời gian chờ dự kiến. \\ \hline
+\textbf{Normal Flow} &
 1. Tiếp tân mở màn hình ``Danh sách chờ'' (Waitlist).\newline
-2. Tiếp tân nhập Tên khách hàng, SĐT và số lượng người.\newline
-3. Hệ thống tính toán và hiển thị thời gian chờ dự kiến.\newline
+2. Tiếp tân nhập Tên khách hàng, SĐT và số lượng người vào form thêm mới.\newline
+3. Hệ thống tính toán và hiển thị thời gian chờ dự kiến dựa trên số lượng bàn sắp ăn xong.\newline
 4. Tiếp tân nhấn ``Lưu vào danh sách''.\newline
-5. Hệ thống hiển thị thông tin khách ở cuối hàng đợi hiện tại. \\
-\hline
-Luồng ngoại lệ &
-\textbf{2a. Khách từ chối chờ:} Tiếp tân nhấn ``Hủy thao tác'', hệ thống xóa form và không lưu dữ liệu. \\
-\hline
+5. Hệ thống hiển thị thông tin khách ở cuối danh sách hàng đợi hiện tại. \\ \hline
+\textbf{Alternative Flows} &
+\textbf{2a. Khách hàng từ chối chờ:} Tiếp tân nhấn ``Hủy thao tác''. Hệ thống xóa form nhập liệu và không lưu dữ liệu. \\ \hline
 \end{longtable}
 
-\subsection*{Use Case 10: Xếp bàn cho khách}
-\begin{longtable}{|P{4cm}|P{11cm}|}
+\begin{longtable}{|L{3.5cm}|L{12.5cm}|}
 \hline
-\textbf{Thuộc tính} & \textbf{Chi tiết} \\
-\hline
-\endfirsthead
-\hline
-\textbf{Thuộc tính} & \textbf{Chi tiết} \\
-\hline
-\endhead
-Tên Use Case & UC10. Xếp bàn cho khách dựa trên số lượng người và tình trạng bàn thực tế \\
-\hline
-Actor chính & Tiếp tân (Host) \\
-\hline
-Mục đích & Gán một bàn trống thực tế cho khách vãng lai hoặc khách từ danh sách chờ, bắt đầu quy trình phục vụ. \\
-\hline
-Tiền điều kiện & Hệ thống ghi nhận có ít nhất một bàn trống đủ chỗ cho số lượng khách. \\
-\hline
-Hậu điều kiện & Trạng thái bàn chuyển sang ``Đang có khách'' (Occupied) và có thể bắt đầu nhận order. \\
-\hline
-Luồng sự kiện chính &
-1. Tiếp tân chọn nhóm khách từ danh sách chờ hoặc tạo lượt khách mới.\newline
+\textbf{Use Case ID} & UC10 \\ \hline
+\textbf{Use Case Name} & Xếp bàn cho khách dựa trên số lượng người và tình trạng bàn thực tế \\ \hline
+\textbf{Primary Actors} & Tiếp tân (Host) \\ \hline
+\textbf{Description} & Gán một bàn trống thực tế cho khách vãng lai hoặc khách từ danh sách chờ, bắt đầu quy trình phục vụ. \\ \hline
+\textbf{Trigger} & Tiếp tân chọn một nhóm khách từ danh sách chờ hoặc tạo lượt khách mới để xếp bàn. \\ \hline
+\textbf{Preconditions} & $\bullet$ Hệ thống ghi nhận có ít nhất một bàn trống đủ chỗ cho số lượng khách. \\ \hline
+\textbf{Postconditions} &
+$\bullet$ Trạng thái bàn được chuyển sang ``Đang có khách'' (Occupied).\newline
+$\bullet$ Có thể bắt đầu nhận order cho bàn đó. \\ \hline
+\textbf{Normal Flow} &
+1. Tiếp tân chọn một nhóm khách từ danh sách chờ hoặc tạo lượt khách mới.\newline
 2. Hệ thống hiển thị các bàn trống có sức chứa phù hợp.\newline
-3. Tiếp tân chọn bàn trên sơ đồ và nhấn ``Xếp bàn'' (Seat Guest).\newline
-4. Hệ thống cập nhật trạng thái bàn từ ``Trống'' sang ``Đang có khách''.\newline
-5. Hệ thống xóa tên nhóm khách khỏi danh sách chờ (nếu thuộc Waitlist). \\
-\hline
-Luồng ngoại lệ &
-\textbf{2a. Không có bàn đủ lớn:} Hệ thống đề xuất tính năng ghép bàn (Merge Tables). Tiếp tân chọn 2 bàn gần nhau để gộp lại. \\
-\hline
+3. Tiếp tân chọn bàn tương ứng trên sơ đồ và nhấn ``Xếp bàn'' (Seat Guest).\newline
+4. Hệ thống cập nhật trạng thái của bàn từ ``Trống'' sang ``Đang có khách''.\newline
+5. Hệ thống xóa tên nhóm khách khỏi danh sách chờ (nếu họ thuộc Waitlist). \\ \hline
+\textbf{Alternative Flows} &
+\textbf{2a. Không có bàn nào đủ lớn:} Hệ thống đề xuất tính năng ghép bàn (Merge Tables). Tiếp tân chọn 2 bàn gần nhau và gộp lại để xếp chỗ. \\ \hline
 \end{longtable}
 
-% ============================================================
 \section*{1.10. Đặc tả Use Case Scenario (Phần 3: UC 11--15)}
 
-\subsection*{Use Case 11: Gửi thông báo khi bàn sẵn sàng}
-\begin{longtable}{|P{4cm}|P{11cm}|}
+\begin{longtable}{|L{3.5cm}|L{12.5cm}|}
 \hline
-\textbf{Thuộc tính} & \textbf{Chi tiết} \\
-\hline
-\endfirsthead
-\hline
-\textbf{Thuộc tính} & \textbf{Chi tiết} \\
-\hline
-\endhead
-Tên Use Case & UC11. Gửi thông báo đến khách hàng khi bàn của họ đã sẵn sàng \\
-\hline
-Actor chính & Tiếp tân (Host) \\
-\hline
-Mục đích & Thông báo tự động cho khách hàng đang chờ quay lại nhận bàn, tối ưu hóa vòng quay bàn. \\
-\hline
-Tiền điều kiện & Khách hàng đã được ghi nhận số điện thoại trong Waitlist hoặc Reservation; có bàn trống phù hợp vừa được dọn xong. \\
-\hline
-Hậu điều kiện & Thông báo (SMS/Notification) được gửi thành công; trạng thái khách chuyển sang ``Đã thông báo'' (Notified). \\
-\hline
-Luồng sự kiện chính &
-1. Hệ thống nhận tín hiệu bàn phù hợp vừa chuyển sang ``Trống''.\newline
-2. Hệ thống làm nổi bật nhóm khách ưu tiên tiếp theo trong danh sách chờ.\newline
-3. Tiếp tân nhấn nút ``Gửi thông báo nhận bàn''.\newline
-4. Hệ thống kết nối SMS Gateway gửi nội dung thông báo đến khách.\newline
-5. Hệ thống cập nhật trạng thái khách thành ``Đã thông báo'' và bắt đầu đếm ngược giữ bàn. \\
-\hline
-Luồng ngoại lệ &
-\textbf{4a. SMS Gateway lỗi:} Hệ thống hiển thị cảnh báo và số điện thoại khách to trên màn hình để Tiếp tân gọi trực tiếp.\newline
-\textbf{5a. Khách quá hạn không xuất hiện:} Hệ thống đổi màu đỏ cảnh báo. Tiếp tân có thể nhấn ``Hủy giữ bàn''. \\
-\hline
+\textbf{Use Case ID} & UC11 \\ \hline
+\textbf{Use Case Name} & Gửi thông báo đến khách hàng khi bàn của họ đã sẵn sàng \\ \hline
+\textbf{Primary Actors} & Tiếp tân (Host) \\ \hline
+\textbf{Description} & Thông báo tự động cho khách hàng đang chờ quay lại nhận bàn để tối ưu hóa vòng quay bàn. \\ \hline
+\textbf{Trigger} & Hệ thống nhận tín hiệu một bàn phù hợp vừa chuyển sang trạng thái ``Trống'' (Clean/Available). \\ \hline
+\textbf{Preconditions} &
+$\bullet$ Khách hàng đã được ghi nhận số điện thoại trong Waitlist hoặc Reservation.\newline
+$\bullet$ Có một bàn trống phù hợp vừa được dọn dẹp xong. \\ \hline
+\textbf{Postconditions} &
+$\bullet$ Thông báo (SMS/Notification) được gửi thành công đến thiết bị của khách hàng.\newline
+$\bullet$ Trạng thái của khách trên hệ thống chuyển sang ``Đã thông báo'' (Notified). \\ \hline
+\textbf{Normal Flow} &
+1. Hệ thống nhận tín hiệu một bàn phù hợp vừa chuyển sang trạng thái ``Trống''.\newline
+2. Hệ thống làm nổi bật nhóm khách hàng ưu tiên tiếp theo trong danh sách chờ.\newline
+3. Tiếp tân nhấn nút ``Gửi thông báo nhận bàn'' cạnh tên khách hàng.\newline
+4. Hệ thống kết nối với dịch vụ SMS Gateway để gửi nội dung thông báo đến khách.\newline
+5. Hệ thống cập nhật trạng thái khách thành ``Đã thông báo'' và bắt đầu đếm ngược thời gian giữ bàn. \\ \hline
+\textbf{Alternative Flows} &
+\textbf{4a. Lỗi SMS Gateway:} Hệ thống hiển thị cảnh báo ``Không thể gửi SMS. Vui lòng gọi trực tiếp cho khách'' và hiển thị to số điện thoại khách trên màn hình.\newline
+\textbf{5a. Khách hàng quá hạn không xuất hiện:} Hệ thống đổi màu cảnh báo đỏ. Tiếp tân có thể nhấn ``Hủy giữ bàn'' để nhường bàn cho khách tiếp theo. \\ \hline
 \end{longtable}
 
-\subsection*{Use Case 12: Cập nhật thời gian chờ dự kiến}
-\begin{longtable}{|P{4cm}|P{11cm}|}
+\begin{longtable}{|L{3.5cm}|L{12.5cm}|}
 \hline
-\textbf{Thuộc tính} & \textbf{Chi tiết} \\
-\hline
-\endfirsthead
-\hline
-\textbf{Thuộc tính} & \textbf{Chi tiết} \\
-\hline
-\endhead
-Tên Use Case & UC12. Cập nhật thời gian chờ dự kiến cho các khách hàng đang trong danh sách chờ \\
-\hline
-Actor chính & Tiếp tân (Host), Hệ thống (Tự động) \\
-\hline
-Mục đích & Cung cấp thông tin ước lượng thời gian chờ (ETA) liên tục và chính xác nhất cho khách hàng. \\
-\hline
-Tiền điều kiện & Có khách hàng trong danh sách chờ; hệ thống liên tục ghi nhận dữ liệu về các bàn đang ăn. \\
-\hline
-Hậu điều kiện & Thời gian chờ dự kiến của mỗi khách được cập nhật và hiển thị trên màn hình Waitlist. \\
-\hline
-Luồng sự kiện chính &
-1. Hệ thống tự động quét trạng thái tất cả các bàn mỗi 5 phút hoặc khi có bàn chuyển trạng thái.\newline
+\textbf{Use Case ID} & UC12 \\ \hline
+\textbf{Use Case Name} & Cập nhật thời gian chờ dự kiến cho các khách hàng đang trong danh sách chờ \\ \hline
+\textbf{Primary Actors} & Tiếp tân (Host), Hệ thống (Tự động) \\ \hline
+\textbf{Description} & Cung cấp thông tin ước lượng thời gian chờ (ETA) liên tục và chính xác nhất cho khách hàng. \\ \hline
+\textbf{Trigger} & Hệ thống tự động kích hoạt khi có bàn thay đổi trạng thái hoặc mỗi 5 phút một lần. \\ \hline
+\textbf{Preconditions} &
+$\bullet$ Có khách hàng đang nằm trong danh sách chờ.\newline
+$\bullet$ Hệ thống liên tục ghi nhận dữ liệu về các bàn đang ăn. \\ \hline
+\textbf{Postconditions} & $\bullet$ Thời gian chờ dự kiến của mỗi khách được cập nhật và hiển thị trên màn hình Waitlist. \\ \hline
+\textbf{Normal Flow} &
+1. Hệ thống tự động quét trạng thái tất cả các bàn hiện tại mỗi 5 phút hoặc khi có bàn thay đổi trạng thái.\newline
 2. Hệ thống tính toán lại thời gian chờ trung bình dựa trên thuật toán dự đoán.\newline
-3. Hệ thống làm mới cột ``Thời gian chờ dự kiến'' trên màn hình Waitlist.\newline
-4. Tiếp tân xem thông tin mới nhất và thông báo lại cho khách nếu họ hỏi. \\
-\hline
-Luồng ngoại lệ &
-\textbf{2a. Bàn hiện tại kéo dài quá giờ:} Hệ thống tự động cộng dồn thời gian trễ vào thời gian chờ Waitlist và bôi vàng để Tiếp tân chú ý. \\
-\hline
+3. Hệ thống làm mới (refresh) cột ``Thời gian chờ dự kiến'' trên màn hình Danh sách chờ.\newline
+4. Tiếp tân xem thông tin mới nhất và thông báo miệng lại cho khách nếu họ hỏi thăm tiến độ. \\ \hline
+\textbf{Alternative Flows} &
+\textbf{2a. Bàn hiện tại kéo dài quá giờ:} Hệ thống phát hiện bàn quá giờ dự kiến, tự động cộng dồn thời gian trễ vào Waitlist và bôi vàng thời gian mới để Tiếp tân chú ý xin lỗi khách. \\ \hline
 \end{longtable}
 
-\subsection*{Use Case 13: Xem danh sách món cần chế biến trên KDS}
-\begin{longtable}{|P{4cm}|P{11cm}|}
+\begin{longtable}{|L{3.5cm}|L{12.5cm}|}
 \hline
-\textbf{Thuộc tính} & \textbf{Chi tiết} \\
-\hline
-\endfirsthead
-\hline
-\textbf{Thuộc tính} & \textbf{Chi tiết} \\
-\hline
-\endhead
-Tên Use Case & UC13. Xem danh sách các món cần chế biến trên hệ thống Hiển thị Bếp (KDS) \\
-\hline
-Actor chính & Đầu bếp (Kitchen Staff) \\
-\hline
-Mục đích & Hiển thị các ``phiếu gọi món'' (tickets) trực quan, có sắp xếp theo ưu tiên để đầu bếp phân bổ công việc. \\
-\hline
-Tiền điều kiện & Nhân viên phục vụ đã chốt đơn và nhấn ``Gửi Bếp''. \\
-\hline
-Hậu điều kiện & Đầu bếp đọc hiểu được món ăn cần làm, số lượng và thuộc trạm nào. \\
-\hline
-Luồng sự kiện chính &
+\textbf{Use Case ID} & UC13 \\ \hline
+\textbf{Use Case Name} & Xem danh sách các món cần chế biến trên hệ thống Hiển thị Bếp (KDS) \\ \hline
+\textbf{Primary Actors} & Đầu bếp (Kitchen Staff) \\ \hline
+\textbf{Description} & Hiển thị các ``phiếu gọi món'' (tickets) một cách trực quan, có sắp xếp theo ưu tiên để đầu bếp phân bổ công việc chế biến. \\ \hline
+\textbf{Trigger} & Nhân viên phục vụ đã chốt đơn và nhấn ``Gửi Bếp'', hệ thống KDS nhận dữ liệu mới. \\ \hline
+\textbf{Preconditions} & $\bullet$ Nhân viên phục vụ đã chốt đơn và nhấn ``Gửi Bếp''. \\ \hline
+\textbf{Postconditions} & $\bullet$ Đầu bếp đọc hiểu được món ăn cần làm, số lượng và thuộc trạm (station) nào. \\ \hline
+\textbf{Normal Flow} &
 1. Hệ thống KDS nhận dữ liệu đơn hàng mới từ máy chủ.\newline
-2. Hệ thống tách đơn hàng thành các món và phân bổ về màn hình KDS từng trạm.\newline
-3. Hệ thống tạo phiếu ảo, sắp xếp từ trái sang phải theo thứ tự thời gian (cũ nhất ở trước).\newline
-4. Đầu bếp đọc Tên món, Số lượng và Bàn yêu cầu để chuẩn bị nguyên liệu. \\
-\hline
-Luồng ngoại lệ &
-\textbf{3a. Đơn hàng ưu tiên VIP:} Quản lý gắn cờ ưu tiên trên POS. KDS tự động đẩy phiếu đó lên đầu hàng đợi và nhấp nháy viền đỏ. \\
-\hline
+2. Hệ thống tách đơn hàng thành các món nhỏ và phân bổ về màn hình KDS của từng trạm tương ứng.\newline
+3. Hệ thống tạo phiếu ảo trên màn hình, sắp xếp từ trái sang phải theo thứ tự thời gian đặt hàng (cũ nhất ở trước).\newline
+4. Đầu bếp nhìn lên màn hình, đọc Tên món, Số lượng và Bàn yêu cầu để chuẩn bị nguyên liệu. \\ \hline
+\textbf{Alternative Flows} &
+\textbf{3a. Đơn hàng ưu tiên (VIP/Khách phàn nàn do đợi lâu):} Quản lý gắn cờ ưu tiên cho đơn hàng trên POS. Hệ thống KDS tự động đẩy phiếu lên đầu hàng đợi và nhấp nháy viền màu đỏ. \\ \hline
 \end{longtable}
 
-\subsection*{Use Case 14: Xem ghi chú dị ứng hoặc tùy chỉnh của từng món}
-\begin{longtable}{|P{4cm}|P{11cm}|}
+\begin{longtable}{|L{3.5cm}|L{12.5cm}|}
 \hline
-\textbf{Thuộc tính} & \textbf{Chi tiết} \\
-\hline
-\endfirsthead
-\hline
-\textbf{Thuộc tính} & \textbf{Chi tiết} \\
-\hline
-\endhead
-Tên Use Case & UC14. Xem chi tiết các ghi chú dị ứng hoặc tùy chỉnh của từng món ăn \\
-\hline
-Actor chính & Đầu bếp (Kitchen Staff) \\
-\hline
-Mục đích & Đảm bảo đầu bếp tuân thủ chính xác các yêu cầu sức khỏe (dị ứng) hoặc sở thích cá nhân của khách. \\
-\hline
-Tiền điều kiện & Món ăn hiển thị trên màn hình KDS có đi kèm dữ liệu ghi chú (modifier/allergy note). \\
-\hline
-Hậu điều kiện & Đầu bếp đọc được và ghi nhớ yêu cầu đặc biệt khi tiến hành nấu. \\
-\hline
-Luồng sự kiện chính &
+\textbf{Use Case ID} & UC14 \\ \hline
+\textbf{Use Case Name} & Xem chi tiết các ghi chú dị ứng hoặc tùy chỉnh của từng món ăn \\ \hline
+\textbf{Primary Actors} & Đầu bếp (Kitchen Staff) \\ \hline
+\textbf{Description} & Đảm bảo đầu bếp tuân thủ chính xác các yêu cầu sức khỏe (dị ứng) hoặc sở thích cá nhân của khách. \\ \hline
+\textbf{Trigger} & Phiếu gọi món hiển thị trên KDS có đi kèm dữ liệu ghi chú (modifier/allergy note). \\ \hline
+\textbf{Preconditions} & $\bullet$ Món ăn hiển thị trên màn hình KDS có đi kèm dữ liệu ghi chú (modifier/allergy note). \\ \hline
+\textbf{Postconditions} & $\bullet$ Đầu bếp đọc được và ghi nhớ yêu cầu đặc biệt khi tiến hành nấu. \\ \hline
+\textbf{Normal Flow} &
 1. Hệ thống phân tích dữ liệu phiếu gọi món trước khi hiển thị lên KDS.\newline
-2. Nếu có ghi chú dị ứng, hệ thống tự động bôi đậm bằng màu đỏ hoặc vàng dưới tên món.\newline
-3. Hệ thống có thể phát âm thanh cảnh báo (bíp) nếu là ghi chú dị ứng nghiêm trọng.\newline
-4. Đầu bếp đọc kỹ yêu cầu trước khi chế biến để tránh sai sót. \\
-\hline
-Luồng ngoại lệ &
-\textbf{2a. Ghi chú quá dài bị che khuất:} Hệ thống hiển thị ``Chạm để xem thêm'' hoặc tự động cuộn chữ (marquee). \\
-\hline
+2. Nếu món ăn có ghi chú dị ứng, hệ thống tự động bôi đậm dòng ghi chú bằng màu đỏ hoặc vàng ngay dưới tên món.\newline
+3. Hệ thống có thể phát thêm âm thanh cảnh báo ngắn (bíp) nếu đó là ghi chú dị ứng nghiêm trọng.\newline
+4. Đầu bếp quan sát màn hình, đọc kỹ yêu cầu trước khi chế biến món ăn để tránh sai sót. \\ \hline
+\textbf{Alternative Flows} &
+\textbf{2a. Ghi chú quá dài bị che khuất trên KDS:} Hệ thống hiển thị ``Chạm để xem thêm'' (nếu là màn hình cảm ứng) hoặc tự động cuộn chữ (marquee) để đầu bếp đọc được toàn bộ nội dung. \\ \hline
 \end{longtable}
 
-\subsection*{Use Case 15: Xác nhận trạng thái ``Bắt đầu chế biến''}
-\begin{longtable}{|P{4cm}|P{11cm}|}
+\begin{longtable}{|L{3.5cm}|L{12.5cm}|}
 \hline
-\textbf{Thuộc tính} & \textbf{Chi tiết} \\
-\hline
-\endfirsthead
-\hline
-\textbf{Thuộc tính} & \textbf{Chi tiết} \\
-\hline
-\endhead
-Tên Use Case & UC15. Xác nhận trạng thái ``Bắt đầu chế biến'' (Cooking) cho một món \\
-\hline
-Actor chính & Đầu bếp (Kitchen Staff) \\
-\hline
-Mục đích & Đánh dấu việc bắt đầu nấu một món ăn cụ thể, thông báo ngược lại cho POS tiến độ hiện tại. \\
-\hline
-Tiền điều kiện & Phiếu gọi món đang ở trạng thái ``Chờ chế biến'' (Pending) trên màn hình KDS. \\
-\hline
-Hậu điều kiện & Món ăn chuyển trạng thái sang ``Đang chế biến'' (Cooking) trên toàn hệ thống; thời gian nấu bắt đầu được tính toán. \\
-\hline
-Luồng sự kiện chính &
-1. Đầu bếp bắt tay vào làm một món ăn trên màn hình KDS.\newline
-2. Đầu bếp chạm vào phiếu món ăn trên màn hình cảm ứng.\newline
-3. Hệ thống đổi màu nền phiếu (trắng sang vàng) và cập nhật trạng thái ``Đang chế biến''.\newline
-4. Hệ thống bắt đầu bấm giờ đếm ngược dựa trên thời gian tiêu chuẩn của món.\newline
-5. Hệ thống gửi tín hiệu cập nhật về máy chủ để nhân viên POS có thể xem được. \\
-\hline
-Luồng ngoại lệ &
-\textbf{2a. Đầu bếp chạm nhầm nút:} Đầu bếp long press để ``Hoàn tác'' (Undo). Hệ thống trả phiếu về ``Chờ chế biến'' và hủy bộ đếm thời gian. \\
-\hline
+\textbf{Use Case ID} & UC15 \\ \hline
+\textbf{Use Case Name} & Xác nhận trạng thái ``Bắt đầu chế biến'' (Cooking) cho một món \\ \hline
+\textbf{Primary Actors} & Đầu bếp (Kitchen Staff) \\ \hline
+\textbf{Description} & Đánh dấu việc bắt đầu sử dụng tài nguyên bếp để nấu một món ăn cụ thể, thông báo ngược lại cho POS tiến độ hiện tại. \\ \hline
+\textbf{Trigger} & Đầu bếp bắt tay vào làm một món ăn có trên màn hình KDS và chạm vào phiếu món đó. \\ \hline
+\textbf{Preconditions} & $\bullet$ Phiếu gọi món đang ở trạng thái ``Chờ chế biến'' (Pending) trên màn hình KDS. \\ \hline
+\textbf{Postconditions} &
+$\bullet$ Món ăn chuyển trạng thái sang ``Đang chế biến'' (Cooking) trên toàn hệ thống.\newline
+$\bullet$ Thời gian nấu bắt đầu được tính toán. \\ \hline
+\textbf{Normal Flow} &
+1. Đầu bếp bắt tay vào làm một món ăn có trên màn hình KDS.\newline
+2. Đầu bếp chạm vào phiếu món ăn đó trên màn hình cảm ứng (hoặc bấm nút Bump/Action bar tương ứng).\newline
+3. Hệ thống đổi màu nền của phiếu (từ màu trắng sang màu vàng) và cập nhật trạng thái ``Đang chế biến''.\newline
+4. Hệ thống bắt đầu bấm giờ đếm ngược dựa trên thời gian tiêu chuẩn của món ăn đó.\newline
+5. Hệ thống gửi tín hiệu cập nhật về máy chủ để nhân viên phục vụ bên ngoài POS có thể xem được. \\ \hline
+\textbf{Alternative Flows} &
+\textbf{2a. Đầu bếp chạm nhầm nút:} Đầu bếp có thể chạm và giữ (long press) vào phiếu vừa chuyển trạng thái để ``Hoàn tác'' (Undo). Hệ thống trả phiếu về ``Chờ chế biến'' và hủy bộ đếm thời gian. \\ \hline
 \end{longtable}

@@ -1,0 +1,645 @@
+\section{Mô Hình Hóa Hệ Thống}
+\subsection{Sơ đồ Use Case}
+
+
+\subsection{Mô tả Use Case}
+
+
+% ============================================================
+\begin{longtable}{|p{3.5cm}|p{12.5cm}|}
+\hline
+\textbf{Use Case ID} & UC01 \\ \hline
+\textbf{Use Case Name} & Xem sơ đồ bàn để nhận biết bàn trống và bàn đang có khách \\ \hline
+\textbf{Primary Actors} & Nhân viên phục vụ (Server) \\ \hline
+\textbf{Description} & Giúp nhân viên phục vụ nắm bắt tình trạng các bàn trong nhà hàng (trống, đang phục vụ, chờ dọn dẹp) để hướng dẫn khách hoặc theo dõi tiến độ. \\ \hline
+\textbf{Trigger} & Nhân viên chọn chức năng ``Sơ đồ bàn'' (Floor Plan) trên màn hình chính. \\ \hline
+\textbf{Preconditions} & $\bullet$ Nhân viên đã đăng nhập vào hệ thống (ứng dụng POS trên máy tính bảng hoặc thiết bị di động). \\ \hline
+\textbf{Postconditions} & $\bullet$ Nhân viên xác định được trạng thái thực tế của các bàn. \\ \hline
+\textbf{Normal Flow} &
+1. Nhân viên chọn chức năng ``Sơ đồ bàn'' (Floor Plan) trên màn hình chính.\newline
+2. Hệ thống truy xuất dữ liệu trạng thái bàn từ cơ sở dữ liệu.\newline
+3. Hệ thống hiển thị sơ đồ trực quan, sử dụng màu sắc phân biệt (xanh = trống, đỏ = đang có khách, vàng = chờ dọn).\newline
+4. Nhân viên xem thông tin, có thể chạm vào một bàn để xem chi tiết (thời gian đã ngồi, nhân viên phụ trách). \\ \hline
+\textbf{Alternative Flows} &
+\textbf{1a. Lỗi kết nối mạng:} Hệ thống hiển thị thông báo ``Không thể tải sơ đồ bàn. Vui lòng kiểm tra lại kết nối'' và cung cấp nút ``Thử lại''.\newline
+\textbf{2a. Bàn không tồn tại:} Nếu nhân viên chọn bàn vừa bị xóa, hệ thống thông báo ``Bàn không còn tồn tại'' và tự động làm mới sơ đồ. \\ \hline
+\end{longtable}
+
+
+\begin{longtable}{|p{3.5cm}|p{12.5cm}|}
+\hline
+\textbf{Use Case ID} & UC02 \\ \hline
+\textbf{Use Case Name} & Ghi nhận đơn đặt món (Order) mới từ khách hàng \\ \hline
+\textbf{Primary Actors} & Nhân viên phục vụ (Server) \\ \hline
+\textbf{Description} & Tạo một đơn hàng mới ghi nhận các món ăn, thức uống khách hàng yêu cầu tại bàn. \\ \hline
+\textbf{Trigger} & Nhân viên chọn bàn đang phục vụ trên sơ đồ và nhấn ``Tạo đơn hàng''. \\ \hline
+\textbf{Preconditions} &
+$\bullet$ Nhân viên đã đăng nhập vào hệ thống.\newline
+$\bullet$ Bàn đã được gắn trạng thái ``Đang có khách'' (Occupied). \\ \hline
+\textbf{Postconditions} & $\bullet$ Một đơn hàng mới được tạo thành công và lưu vào hệ thống dưới trạng thái ``Đang chọn món'' (Draft/Pending). \\ \hline
+\textbf{Normal Flow} &
+1. Nhân viên chọn bàn đang phục vụ trên sơ đồ và nhấn ``Tạo đơn hàng''.\newline
+2. Hệ thống hiển thị giao diện thực đơn (Menu) điện tử với các danh mục (Khai vị, Món chính, Đồ uống...).\newline
+3. Nhân viên lắng nghe khách hàng và bấm chọn các món tương ứng.\newline
+4. Hệ thống hiển thị danh sách các món đã chọn kèm theo tổng tiền tạm tính.\newline
+5. Nhân viên xác nhận lại danh sách với khách hàng và nhấn ``Lưu đơn hàng''.\newline
+6. Hệ thống lưu trữ đơn hàng và thông báo ``Tạo đơn hàng thành công''. \\ \hline
+\textbf{Alternative Flows} &
+\textbf{3a. Món ăn đã hết hàng:} Hệ thống làm mờ nút chọn và hiển thị nhãn ``Hết hàng''. Nhân viên thông báo để khách đổi món khác.\newline
+\textbf{5a. Khách hàng hủy toàn bộ:} Nhân viên nhấn ``Hủy đơn đang tạo''. Hệ thống xóa dữ liệu tạm và quay về màn hình sơ đồ bàn. \\ \hline
+\end{longtable}
+
+\begin{longtable}{|p{3.5cm}|p{12.5cm}|}
+\hline
+\textbf{Use Case ID} & UC03 \\ \hline
+\textbf{Use Case Name} & Ghi chú các yêu cầu tùy chỉnh hoặc thông tin dị ứng thực phẩm vào đơn hàng \\ \hline
+\textbf{Primary Actors} & Nhân viên phục vụ (Server) \\ \hline
+\textbf{Description} & Bổ sung các thông tin quan trọng (không hành, ít cay, dị ứng đậu phộng) vào một món ăn cụ thể trong đơn. \\ \hline
+\textbf{Trigger} & Nhân viên chọn một món ăn trong danh sách đặt món để thêm ghi chú tùy chỉnh. \\ \hline
+\textbf{Preconditions} &
+$\bullet$ Đơn hàng đang ở trạng thái chưa được gửi xuống bếp.\newline
+$\bullet$ Món ăn đã được chọn vào danh sách đặt món. \\ \hline
+\textbf{Postconditions} & $\bullet$ Ghi chú được đính kèm vào món ăn tương ứng và sẵn sàng để truyền xuống bếp. \\ \hline
+\textbf{Normal Flow} &
+1. Tại màn hình danh sách món đã chọn, nhân viên chọn một món ăn cần ghi chú.\newline
+2. Hệ thống hiển thị popup với các tùy chọn modifier mặc định (Mức độ cay, Kích cỡ) và ô nhập văn bản tự do.\newline
+3. Nhân viên tick chọn các modifier hoặc gõ tay ghi chú dị ứng (VD: ``Dị ứng đậu phộng'').\newline
+4. Nhân viên nhấn ``Xác nhận''.\newline
+5. Hệ thống cập nhật chi tiết món ăn, hiển thị ghi chú bằng màu nổi bật ngay dưới tên món. \\ \hline
+\textbf{Alternative Flows} &
+\textbf{4a. Nhập ký tự quá dài:} Hệ thống báo lỗi ``Ghi chú tối đa 100 ký tự'' và yêu cầu nhân viên nhập lại. \\ \hline
+\end{longtable}
+
+\begin{longtable}{|p{3.5cm}|p{12.5cm}|}
+\hline
+\textbf{Use Case ID} & UC04 \\ \hline
+\textbf{Use Case Name} & Điều chỉnh hoặc hủy món ăn trong đơn hàng khi bếp chưa bắt đầu chế biến \\ \hline
+\textbf{Primary Actors} & Nhân viên phục vụ (Server) \\ \hline
+\textbf{Description} & Thay đổi số lượng hoặc xóa bỏ món ăn nếu khách hàng đổi ý trước khi bếp tiến hành nấu. \\ \hline
+\textbf{Trigger} & Khách hàng yêu cầu thay đổi hoặc hủy một món ăn sau khi đã đặt. \\ \hline
+\textbf{Preconditions} &
+$\bullet$ Đơn hàng đã được tạo trong hệ thống.\newline
+$\bullet$ Trạng thái của món ăn là ``Đang chờ'' (Pending) hoặc ``Đã tiếp nhận'' (Received).\newline
+$\bullet$ Món ăn CHƯA chuyển sang trạng thái ``Đang chế biến'' (Cooking). \\ \hline
+\textbf{Postconditions} &
+$\bullet$ Đơn hàng được cập nhật (đổi số lượng hoặc xóa món) và tổng tiền được tính toán lại.\newline
+$\bullet$ Bếp được cập nhật thông tin nếu đơn đã gửi đi. \\ \hline
+\textbf{Normal Flow} &
+1. Nhân viên mở chi tiết đơn hàng của bàn cần chỉnh sửa.\newline
+2. Hệ thống kiểm tra và hiển thị trạng thái hiện tại của từng món.\newline
+3. Nhân viên nhấn nút ``$-$'' (giảm số lượng) hoặc nút ``Xóa'' cạnh món ăn khách muốn hủy.\newline
+4. Hệ thống kiểm tra trạng thái món ăn và xác nhận món chưa bị bếp nấu.\newline
+5. Hệ thống xóa/giảm số lượng món, cập nhật lại tổng tiền tạm tính.\newline
+6. Hệ thống tự động gửi thông báo cập nhật lên màn hình KDS (nếu đơn đã gửi xuống bếp). \\ \hline
+\textbf{Alternative Flows} &
+\textbf{4a. Bếp đã bắt đầu chế biến (Cooking):} Hệ thống từ chối thao tác và hiện thông báo ``Món này đã bắt đầu được chế biến. Vui lòng liên hệ Quản lý hoặc Bếp trưởng để hủy thao tác này''. \\ \hline
+\end{longtable}
+
+\begin{longtable}{|p{3.5cm}|p{12.5cm}|}
+\hline
+\textbf{Use Case ID} & UC05 \\ \hline
+\textbf{Use Case Name} & Gửi yêu cầu chuẩn bị món ăn xuống hệ thống hiển thị bếp (KDS) \\ \hline
+\textbf{Primary Actors} & Nhân viên phục vụ (Server) \\ \hline
+\textbf{Description} & Chuyển thông tin các món đã chốt xuống bộ phận bếp để họ bắt đầu chuẩn bị. \\ \hline
+\textbf{Trigger} & Nhân viên nhấn nút ``Gửi Bếp'' (Send to Kitchen) sau khi khách chốt danh sách món. \\ \hline
+\textbf{Preconditions} &
+$\bullet$ Đơn hàng có ít nhất một món ăn.\newline
+$\bullet$ Nhân viên và khách đã chốt danh sách.\newline
+$\bullet$ Hệ thống KDS đang hoạt động bình thường. \\ \hline
+\textbf{Postconditions} &
+$\bullet$ Các món ăn được phân phối đến đúng màn hình trạm bếp (Station).\newline
+$\bullet$ Trạng thái đơn hàng đổi thành ``Đã chuyển bếp''. \\ \hline
+\textbf{Normal Flow} &
+1. Tại màn hình đơn hàng, nhân viên nhấn nút ``Gửi Bếp'' (Send to Kitchen).\newline
+2. Hệ thống phân tích danh sách các món ăn và phân loại về đúng trạm (đồ uống ra quầy Bar, đồ nướng ra trạm Nướng).\newline
+3. Hệ thống tạo các phiếu nấu (kitchen tickets) số hóa và truyền tới các màn hình KDS tương ứng.\newline
+4. Hệ thống cập nhật trạng thái đơn hàng trên POS thành ``Đã chuyển bếp''.\newline
+5. Màn hình nhân viên hiển thị thông báo ``Đã gửi yêu cầu thành công''. \\ \hline
+\textbf{Alternative Flows} &
+\textbf{3a. Hệ thống KDS mất kết nối:} Hệ thống cảnh báo ``Không thể kết nối với Bếp. Đơn hàng lưu tạm trạng thái Chờ gửi''. Hệ thống tự động thử gửi lại (retry) ngầm, hoặc in ra máy in dự phòng (nếu có cấu hình). \\ \hline
+\end{longtable}
+
+\begin{longtable}{|p{3.5cm}|p{12.5cm}|}
+\hline
+\textbf{Use Case ID} & UC06 \\ \hline
+\textbf{Use Case Name} & Theo dõi trạng thái tiến độ chuẩn bị món ăn của từng bàn \\ \hline
+\textbf{Primary Actors} & Nhân viên phục vụ (Server) \\ \hline
+\textbf{Description} & Cho phép nhân viên biết được tiến độ món ăn dưới bếp để phản hồi cho khách khi được hỏi. \\ \hline
+\textbf{Trigger} & Nhân viên chọn bàn cần kiểm tra tiến độ trên giao diện POS. \\ \hline
+\textbf{Preconditions} & $\bullet$ Đơn hàng đã được gửi xuống bếp thành công (Trạng thái: Đã chuyển bếp). \\ \hline
+\textbf{Postconditions} & $\bullet$ Nhân viên nhận biết được trạng thái mới nhất của các món ăn. \\ \hline
+\textbf{Normal Flow} &
+1. Nhân viên chọn bàn cần kiểm tra trên giao diện POS.\newline
+2. Hệ thống truy vấn trạng thái đồng bộ hóa từ KDS.\newline
+3. Hệ thống hiển thị danh sách các món ăn kèm nhãn trạng thái (Chờ chế biến, Đang chế biến, Sẵn sàng phục vụ).\newline
+4. Nhân viên xem màn hình để nắm thông tin tiến độ tổng thể. \\ \hline
+\textbf{Alternative Flows} &
+\textbf{2a. Bếp chưa cập nhật trạng thái:} Hệ thống tiếp tục hiển thị trạng thái cũ nhất (Chờ chế biến).\newline
+\textbf{2b. Mất kết nối với KDS:} Hệ thống hiển thị cảnh báo ``Trạng thái có thể không chính xác do mất kết nối với Bếp'' cùng thời gian cập nhật lần cuối. \\ \hline
+\end{longtable}
+
+\begin{longtable}{|p{3.5cm}|p{12.5cm}|}
+\hline
+\textbf{Use Case ID} & UC07 \\ \hline
+\textbf{Use Case Name} & Cập nhật trạng thái ``Đã phục vụ'' sau khi mang món ăn lên cho khách \\ \hline
+\textbf{Primary Actors} & Nhân viên phục vụ (Server) \\ \hline
+\textbf{Description} & Đánh dấu các món đã được giao đến tận bàn cho khách, giúp hoàn tất quy trình phục vụ của một món ăn. \\ \hline
+\textbf{Trigger} & Nhân viên mang món ăn ra bàn và cần cập nhật trạng thái trên POS. \\ \hline
+\textbf{Preconditions} &
+$\bullet$ Món ăn đã ở trạng thái ``Sẵn sàng phục vụ'' (Ready to Serve) từ bếp.\newline
+$\bullet$ Nhân viên đã mang món ra bàn. \\ \hline
+\textbf{Postconditions} & $\bullet$ Món ăn được cập nhật thành ``Đã phục vụ'' (Served), hỗ trợ chính xác cho việc in hóa đơn sau này. \\ \hline
+\textbf{Normal Flow} &
+1. Sau khi đặt món xuống bàn, nhân viên mở giao diện đơn hàng của bàn đó trên POS.\newline
+2. Hệ thống hiển thị các món đang chờ phục vụ.\newline
+3. Nhân viên đánh dấu tick (hoặc lướt) vào món ăn vừa mang ra.\newline
+4. Hệ thống cập nhật trạng thái món thành ``Đã phục vụ'' và lưu vào cơ sở dữ liệu.\newline
+5. Hệ thống ẩn món ăn đó khỏi danh sách ``Cần phục vụ'' trên màn hình. \\ \hline
+\textbf{Alternative Flows} &
+\textbf{3a. Đánh dấu nhầm món:} Nhân viên nhấn nút ``Hoàn tác'' (Undo) ngay cạnh món ăn vừa đánh dấu. Hệ thống đưa món về trạng thái ``Sẵn sàng phục vụ''. \\ \hline
+\end{longtable}
+
+\begin{longtable}{|p{3.5cm}|p{12.5cm}|}
+\hline
+\textbf{Use Case ID} & UC08 \\ \hline
+\textbf{Use Case Name} & Quản lý danh sách đặt bàn trước của khách hàng \\ \hline
+\textbf{Primary Actors} & Tiếp tân (Host) \\ \hline
+\textbf{Description} & Tạo, sửa, hủy các yêu cầu đặt bàn trước (Reservation) để đảm bảo có đủ chỗ ngồi theo đúng thời gian yêu cầu. \\ \hline
+\textbf{Trigger} & Tiếp tân nhận yêu cầu đặt bàn từ khách và chọn chức năng ``Đặt bàn mới''. \\ \hline
+\textbf{Preconditions} & $\bullet$ Tiếp tân đã đăng nhập vào module Quản lý Đặt chỗ (Reservation Module). \\ \hline
+\textbf{Postconditions} &
+$\bullet$ Yêu cầu đặt bàn được cập nhật vào lịch của nhà hàng.\newline
+$\bullet$ Bàn được giữ chỗ tương ứng. \\ \hline
+\textbf{Normal Flow} &
+1. Tiếp tân chọn chức năng ``Đặt bàn mới''.\newline
+2. Hệ thống hiển thị form điền thông tin (Tên khách, SĐT, Giờ đến, Số lượng người, Ghi chú đặc biệt).\newline
+3. Tiếp tân nhập thông tin khách cung cấp và nhấn ``Kiểm tra chỗ trống''.\newline
+4. Hệ thống kiểm tra dữ liệu sơ đồ bàn trong khung giờ đó và đề xuất các bàn phù hợp.\newline
+5. Tiếp tân chọn bàn và nhấn ``Xác nhận đặt bàn''.\newline
+6. Hệ thống lưu trạng thái đặt chỗ, gửi tin nhắn SMS/Email tự động (nếu có tích hợp) đến khách hàng. \\ \hline
+\textbf{Alternative Flows} &
+\textbf{4a. Nhà hàng đã hết bàn trống trong khung giờ:} Hệ thống cảnh báo ``Không đủ bàn trống cho khung giờ này''. Tiếp tân có thể đề xuất giờ khác hoặc chuyển khách vào danh sách chờ. \\ \hline
+\end{longtable}
+
+\begin{longtable}{|p{3.5cm}|p{12.5cm}|}
+\hline
+\textbf{Use Case ID} & UC09 \\ \hline
+\textbf{Use Case Name} & Ghi nhận thông tin khách hàng vào danh sách chờ (Waitlist) \\ \hline
+\textbf{Primary Actors} & Tiếp tân (Host) \\ \hline
+\textbf{Description} & Đưa khách hàng vãng lai vào danh sách chờ khi nhà hàng đang hết bàn, giúp quản lý hàng đợi một cách công bằng. \\ \hline
+\textbf{Trigger} & Khách vãng lai đến nhà hàng khi đang kín bàn và tiếp tân mở màn hình ``Danh sách chờ''. \\ \hline
+\textbf{Preconditions} & $\bullet$ Nhà hàng đang trong tình trạng kín bàn (hết bàn trống). \\ \hline
+\textbf{Postconditions} &
+$\bullet$ Khách hàng được thêm vào hàng đợi với số thứ tự và thời gian chờ dự kiến. \\ \hline
+\textbf{Normal Flow} &
+1. Tiếp tân mở màn hình ``Danh sách chờ'' (Waitlist).\newline
+2. Tiếp tân nhập Tên khách hàng, SĐT và số lượng người vào form thêm mới.\newline
+3. Hệ thống tính toán và hiển thị thời gian chờ dự kiến dựa trên số lượng bàn sắp ăn xong.\newline
+4. Tiếp tân nhấn ``Lưu vào danh sách''.\newline
+5. Hệ thống hiển thị thông tin khách ở cuối danh sách hàng đợi hiện tại. \\ \hline
+\textbf{Alternative Flows} &
+\textbf{2a. Khách hàng từ chối chờ:} Tiếp tân nhấn ``Hủy thao tác''. Hệ thống xóa form nhập liệu và không lưu dữ liệu. \\ \hline
+\end{longtable}
+
+\begin{longtable}{|p{3.5cm}|p{12.5cm}|}
+\hline
+\textbf{Use Case ID} & UC10 \\ \hline
+\textbf{Use Case Name} & Xếp bàn cho khách dựa trên số lượng người và tình trạng bàn thực tế \\ \hline
+\textbf{Primary Actors} & Tiếp tân (Host) \\ \hline
+\textbf{Description} & Gán một bàn trống thực tế cho khách vãng lai hoặc khách từ danh sách chờ, bắt đầu quy trình phục vụ. \\ \hline
+\textbf{Trigger} & Tiếp tân chọn một nhóm khách từ danh sách chờ hoặc tạo lượt khách mới để xếp bàn. \\ \hline
+\textbf{Preconditions} & $\bullet$ Hệ thống ghi nhận có ít nhất một bàn trống đủ chỗ cho số lượng khách. \\ \hline
+\textbf{Postconditions} &
+$\bullet$ Trạng thái bàn được chuyển sang ``Đang có khách'' (Occupied).\newline
+$\bullet$ Có thể bắt đầu nhận order cho bàn đó. \\ \hline
+\textbf{Normal Flow} &
+1. Tiếp tân chọn một nhóm khách từ danh sách chờ hoặc tạo lượt khách mới.\newline
+2. Hệ thống hiển thị các bàn trống có sức chứa phù hợp.\newline
+3. Tiếp tân chọn bàn tương ứng trên sơ đồ và nhấn ``Xếp bàn'' (Seat Guest).\newline
+4. Hệ thống cập nhật trạng thái của bàn từ ``Trống'' sang ``Đang có khách''.\newline
+5. Hệ thống xóa tên nhóm khách khỏi danh sách chờ (nếu họ thuộc Waitlist). \\ \hline
+\textbf{Alternative Flows} &
+\textbf{2a. Không có bàn nào đủ lớn:} Hệ thống đề xuất tính năng ghép bàn (Merge Tables). Tiếp tân chọn 2 bàn gần nhau và gộp lại để xếp chỗ. \\ \hline
+\end{longtable}
+
+
+\begin{longtable}{|p{3.5cm}|p{12.5cm}|}
+\hline
+\textbf{Use Case ID} & UC11 \\ \hline
+\textbf{Use Case Name} & Gửi thông báo đến khách hàng khi bàn của họ đã sẵn sàng \\ \hline
+\textbf{Primary Actors} & Tiếp tân (Host) \\ \hline
+\textbf{Description} & Thông báo tự động cho khách hàng đang chờ quay lại nhận bàn để tối ưu hóa vòng quay bàn. \\ \hline
+\textbf{Trigger} & Hệ thống nhận tín hiệu một bàn phù hợp vừa chuyển sang trạng thái ``Trống'' (Clean/Available). \\ \hline
+\textbf{Preconditions} &
+$\bullet$ Khách hàng đã được ghi nhận số điện thoại trong Waitlist hoặc Reservation.\newline
+$\bullet$ Có một bàn trống phù hợp vừa được dọn dẹp xong. \\ \hline
+\textbf{Postconditions} &
+$\bullet$ Thông báo (SMS/Notification) được gửi thành công đến thiết bị của khách hàng.\newline
+$\bullet$ Trạng thái của khách trên hệ thống chuyển sang ``Đã thông báo'' (Notified). \\ \hline
+\textbf{Normal Flow} &
+1. Hệ thống nhận tín hiệu một bàn phù hợp vừa chuyển sang trạng thái ``Trống''.\newline
+2. Hệ thống làm nổi bật nhóm khách hàng ưu tiên tiếp theo trong danh sách chờ.\newline
+3. Tiếp tân nhấn nút ``Gửi thông báo nhận bàn'' cạnh tên khách hàng.\newline
+4. Hệ thống kết nối với dịch vụ SMS Gateway để gửi nội dung thông báo đến khách.\newline
+5. Hệ thống cập nhật trạng thái khách thành ``Đã thông báo'' và bắt đầu đếm ngược thời gian giữ bàn. \\ \hline
+\textbf{Alternative Flows} &
+\textbf{4a. Lỗi SMS Gateway:} Hệ thống hiển thị cảnh báo ``Không thể gửi SMS. Vui lòng gọi trực tiếp cho khách'' và hiển thị to số điện thoại khách trên màn hình.\newline
+\textbf{5a. Khách hàng quá hạn không xuất hiện:} Hệ thống đổi màu cảnh báo đỏ. Tiếp tân có thể nhấn ``Hủy giữ bàn'' để nhường bàn cho khách tiếp theo. \\ \hline
+\end{longtable}
+
+\begin{longtable}{|p{3.5cm}|p{12.5cm}|}
+\hline
+\textbf{Use Case ID} & UC12 \\ \hline
+\textbf{Use Case Name} & Cập nhật thời gian chờ dự kiến cho các khách hàng đang trong danh sách chờ \\ \hline
+\textbf{Primary Actors} & Tiếp tân (Host), Hệ thống (Tự động) \\ \hline
+\textbf{Description} & Cung cấp thông tin ước lượng thời gian chờ (ETA) liên tục và chính xác nhất cho khách hàng. \\ \hline
+\textbf{Trigger} & Hệ thống tự động kích hoạt khi có bàn thay đổi trạng thái hoặc mỗi 5 phút một lần. \\ \hline
+\textbf{Preconditions} &
+$\bullet$ Có khách hàng đang nằm trong danh sách chờ.\newline
+$\bullet$ Hệ thống liên tục ghi nhận dữ liệu về các bàn đang ăn. \\ \hline
+\textbf{Postconditions} & $\bullet$ Thời gian chờ dự kiến của mỗi khách được cập nhật và hiển thị trên màn hình Waitlist. \\ \hline
+\textbf{Normal Flow} &
+1. Hệ thống tự động quét trạng thái tất cả các bàn hiện tại mỗi 5 phút hoặc khi có bàn thay đổi trạng thái.\newline
+2. Hệ thống tính toán lại thời gian chờ trung bình dựa trên thuật toán dự đoán.\newline
+3. Hệ thống làm mới (refresh) cột ``Thời gian chờ dự kiến'' trên màn hình Danh sách chờ.\newline
+4. Tiếp tân xem thông tin mới nhất và thông báo miệng lại cho khách nếu họ hỏi thăm tiến độ. \\ \hline
+\textbf{Alternative Flows} &
+\textbf{2a. Bàn hiện tại kéo dài quá giờ:} Hệ thống phát hiện bàn quá giờ dự kiến, tự động cộng dồn thời gian trễ vào Waitlist và bôi vàng thời gian mới để Tiếp tân chú ý xin lỗi khách. \\ \hline
+\end{longtable}
+
+\begin{longtable}{|p{3.5cm}|p{12.5cm}|}
+\hline
+\textbf{Use Case ID} & UC13 \\ \hline
+\textbf{Use Case Name} & Xem danh sách các món cần chế biến trên hệ thống Hiển thị Bếp (KDS) \\ \hline
+\textbf{Primary Actors} & Đầu bếp (Kitchen Staff) \\ \hline
+\textbf{Description} & Hiển thị các ``phiếu gọi món'' (tickets) một cách trực quan, có sắp xếp theo ưu tiên để đầu bếp phân bổ công việc chế biến. \\ \hline
+\textbf{Trigger} & Nhân viên phục vụ đã chốt đơn và nhấn ``Gửi Bếp'', hệ thống KDS nhận dữ liệu mới. \\ \hline
+\textbf{Preconditions} & $\bullet$ Nhân viên phục vụ đã chốt đơn và nhấn ``Gửi Bếp''. \\ \hline
+\textbf{Postconditions} & $\bullet$ Đầu bếp đọc hiểu được món ăn cần làm, số lượng và thuộc trạm (station) nào. \\ \hline
+\textbf{Normal Flow} &
+1. Hệ thống KDS nhận dữ liệu đơn hàng mới từ máy chủ.\newline
+2. Hệ thống tách đơn hàng thành các món nhỏ và phân bổ về màn hình KDS của từng trạm tương ứng.\newline
+3. Hệ thống tạo phiếu ảo trên màn hình, sắp xếp từ trái sang phải theo thứ tự thời gian đặt hàng (cũ nhất ở trước).\newline
+4. Đầu bếp nhìn lên màn hình, đọc Tên món, Số lượng và Bàn yêu cầu để chuẩn bị nguyên liệu. \\ \hline
+\textbf{Alternative Flows} &
+\textbf{3a. Đơn hàng ưu tiên (VIP/Khách phàn nàn do đợi lâu):} Quản lý gắn cờ ưu tiên cho đơn hàng trên POS. Hệ thống KDS tự động đẩy phiếu lên đầu hàng đợi và nhấp nháy viền màu đỏ. \\ \hline
+\end{longtable}
+
+\begin{longtable}{|p{3.5cm}|p{12.5cm}|}
+\hline
+\textbf{Use Case ID} & UC14 \\ \hline
+\textbf{Use Case Name} & Xem chi tiết các ghi chú dị ứng hoặc tùy chỉnh của từng món ăn \\ \hline
+\textbf{Primary Actors} & Đầu bếp (Kitchen Staff) \\ \hline
+\textbf{Description} & Đảm bảo đầu bếp tuân thủ chính xác các yêu cầu sức khỏe (dị ứng) hoặc sở thích cá nhân của khách. \\ \hline
+\textbf{Trigger} & Phiếu gọi món hiển thị trên KDS có đi kèm dữ liệu ghi chú (modifier/allergy note). \\ \hline
+\textbf{Preconditions} & $\bullet$ Món ăn hiển thị trên màn hình KDS có đi kèm dữ liệu ghi chú (modifier/allergy note). \\ \hline
+\textbf{Postconditions} & $\bullet$ Đầu bếp đọc được và ghi nhớ yêu cầu đặc biệt khi tiến hành nấu. \\ \hline
+\textbf{Normal Flow} &
+1. Hệ thống phân tích dữ liệu phiếu gọi món trước khi hiển thị lên KDS.\newline
+2. Nếu món ăn có ghi chú dị ứng, hệ thống tự động bôi đậm dòng ghi chú bằng màu đỏ hoặc vàng ngay dưới tên món.\newline
+3. Hệ thống có thể phát thêm âm thanh cảnh báo ngắn (bíp) nếu đó là ghi chú dị ứng nghiêm trọng.\newline
+4. Đầu bếp quan sát màn hình, đọc kỹ yêu cầu trước khi chế biến món ăn để tránh sai sót. \\ \hline
+\textbf{Alternative Flows} &
+\textbf{2a. Ghi chú quá dài bị che khuất trên KDS:} Hệ thống hiển thị ``Chạm để xem thêm'' (nếu là màn hình cảm ứng) hoặc tự động cuộn chữ (marquee) để đầu bếp đọc được toàn bộ nội dung. \\ \hline
+\end{longtable}
+
+\begin{longtable}{|p{3.5cm}|p{12.5cm}|}
+\hline
+\textbf{Use Case ID} & UC15 \\ \hline
+\textbf{Use Case Name} & Xác nhận trạng thái ``Bắt đầu chế biến'' (Cooking) cho một món \\ \hline
+\textbf{Primary Actors} & Đầu bếp (Kitchen Staff) \\ \hline
+\textbf{Description} & Đánh dấu việc bắt đầu sử dụng tài nguyên bếp để nấu một món ăn cụ thể, thông báo ngược lại cho POS tiến độ hiện tại. \\ \hline
+\textbf{Trigger} & Đầu bếp bắt tay vào làm một món ăn có trên màn hình KDS và chạm vào phiếu món đó. \\ \hline
+\textbf{Preconditions} & $\bullet$ Phiếu gọi món đang ở trạng thái ``Chờ chế biến'' (Pending) trên màn hình KDS. \\ \hline
+\textbf{Postconditions} &
+$\bullet$ Món ăn chuyển trạng thái sang ``Đang chế biến'' (Cooking) trên toàn hệ thống.\newline
+$\bullet$ Thời gian nấu bắt đầu được tính toán. \\ \hline
+\textbf{Normal Flow} &
+1. Đầu bếp bắt tay vào làm một món ăn có trên màn hình KDS.\newline
+2. Đầu bếp chạm vào phiếu món ăn đó trên màn hình cảm ứng (hoặc bấm nút Bump/Action bar tương ứng).\newline
+3. Hệ thống đổi màu nền của phiếu (từ màu trắng sang màu vàng) và cập nhật trạng thái ``Đang chế biến''.\newline
+4. Hệ thống bắt đầu bấm giờ đếm ngược dựa trên thời gian tiêu chuẩn của món ăn đó.\newline
+5. Hệ thống gửi tín hiệu cập nhật về máy chủ để nhân viên phục vụ bên ngoài POS có thể xem được. \\ \hline
+\textbf{Alternative Flows} &
+\textbf{2a. Đầu bếp chạm nhầm nút:} Đầu bếp có thể chạm và giữ (long press) vào phiếu vừa chuyển trạng thái để ``Hoàn tác'' (Undo). Hệ thống trả phiếu về ``Chờ chế biến'' và hủy bộ đếm thời gian. \\ \hline
+\end{longtable}
+
+\begin{longtable}{|p{3.5cm}|p{12.5cm}|}
+\hline
+\textbf{Use Case ID} & UC16 \\ \hline
+\textbf{Use Case Name} & Đánh dấu món ăn đã hoàn tất và ``Sẵn sàng phục vụ'' (Ready to Serve) \\ \hline
+\textbf{Primary Actors} & Đầu bếp (Kitchen Staff) \\ \hline
+\textbf{Description} & Ghi nhận món ăn đã nấu xong, báo cho hệ thống để điều phối nhân viên phục vụ mang món ra bàn. \\ \hline
+\textbf{Trigger} & Đầu bếp hoàn tất việc chế biến và bày món ăn ra khay chờ (Expo window). \\ \hline
+\textbf{Preconditions} & $\bullet$ Món ăn đang ở trạng thái ``Đang chế biến'' (Cooking) trên màn hình KDS. \\ \hline
+\textbf{Postconditions} &
+$\bullet$ Trạng thái món ăn đổi thành ``Sẵn sàng phục vụ'' (Ready to Serve).\newline
+$\bullet$ Thông báo được chuyển đến màn hình POS/thiết bị của nhân viên phục vụ. \\ \hline
+\textbf{Normal Flow} &
+1. Đầu bếp hoàn tất việc chế biến và bày món ăn ra khay chờ (Expo window).\newline
+2. Đầu bếp chạm/bấm nút ``Hoàn thành'' (Done/Bump) trên phiếu món ăn tương ứng tại KDS.\newline
+3. Hệ thống xóa phiếu món ăn đó khỏi màn hình của Đầu bếp (hoặc chuyển sang danh sách Đã xong).\newline
+4. Hệ thống cập nhật trạng thái món thành ``Sẵn sàng phục vụ'' trên toàn hệ thống.\newline
+5. Hệ thống gửi thông báo nhấp nháy hoặc âm thanh đến POS của nhân viên phục vụ phụ trách bàn đó. \\ \hline
+\textbf{Alternative Flows} &
+\textbf{2a. Bấm nhầm nút khi chưa nấu xong:} Đầu bếp truy cập vào tab ``Đã hoàn thành'' (History/Done), chọn phiếu vừa bấm và nhấn ``Hoàn tác'' (Recall). Hệ thống đưa phiếu trở lại màn hình chính đang nấu. \\ \hline
+\end{longtable}
+
+\begin{longtable}{|p{3.5cm}|p{12.5cm}|}
+\hline
+\textbf{Use Case ID} & UC17 \\ \hline
+\textbf{Use Case Name} & Xem cảnh báo các món ăn sắp trễ thời gian phục vụ quy định \\ \hline
+\textbf{Primary Actors} & Đầu bếp (Kitchen Staff) \\ \hline
+\textbf{Description} & Hệ thống hỗ trợ đầu bếp phân bổ lại sự tập trung vào các món sắp hoặc đã vượt quá thời gian chế biến tiêu chuẩn (SLA). \\ \hline
+\textbf{Trigger} & Hệ thống phát hiện một phiếu nấu đạt đến 80\% thời gian chế biến cho phép. \\ \hline
+\textbf{Preconditions} &
+$\bullet$ Hệ thống đang đếm ngược thời gian nấu của ít nhất một món ăn.\newline
+$\bullet$ KDS đang hoạt động bình thường. \\ \hline
+\textbf{Postconditions} & $\bullet$ Đầu bếp nhận biết được sự khẩn cấp và ưu tiên xử lý món bị trễ. \\ \hline
+\textbf{Normal Flow} &
+1. Hệ thống liên tục so sánh thời gian đã trôi qua của một phiếu nấu với Thời gian chuẩn bị dự kiến (Prep Time) trong cơ sở dữ liệu.\newline
+2. Khi phiếu đạt đến 80\% thời gian cho phép, hệ thống chuyển viền phiếu sang màu vàng (Cảnh báo sắp trễ).\newline
+3. Khi phiếu vượt quá 100\% thời gian, hệ thống chuyển toàn bộ nền phiếu sang màu đỏ và nhấp nháy liên tục.\newline
+4. Đầu bếp nhìn thấy cảnh báo trực quan trên KDS và điều chỉnh ưu tiên nấu nướng.\newline
+5. (Tuỳ chọn) Hệ thống tự động gửi cảnh báo cho Quản lý bếp qua màn hình tổng. \\ \hline
+\textbf{Alternative Flows} &
+\textbf{2a. Món ăn bị đình trệ do thiếu nguyên liệu:} Đầu bếp nhấn vào phiếu và chọn ``Tạm ngưng'' (Hold) kèm lý do (Hết nguyên liệu). Hệ thống dừng đếm thời gian trễ và báo lại cho quản lý/nhân viên phục vụ. \\ \hline
+\end{longtable}
+
+\begin{longtable}{|p{3.5cm}|p{12.5cm}|}
+\hline
+\textbf{Use Case ID} & UC18 \\ \hline
+\textbf{Use Case Name} & Cập nhật thủ công số lượng nguyên liệu đã sử dụng sau khi nấu xong \\ \hline
+\textbf{Primary Actors} & Đầu bếp (Kitchen Staff) \\ \hline
+\textbf{Description} & Trừ đi lượng nguyên liệu bổ sung, hư hỏng hoặc làm rơi vãi không theo định lượng chuẩn, giúp số liệu tồn kho luôn chính xác. \\ \hline
+\textbf{Trigger} & Đầu bếp phát hiện hao hụt nguyên liệu ngoài định mức và mở chức năng ``Cập nhật tồn kho''. \\ \hline
+\textbf{Preconditions} & $\bullet$ Đầu bếp có quyền truy cập vào module quản lý nguyên liệu/tồn kho tại bếp. \\ \hline
+\textbf{Postconditions} &
+$\bullet$ Cơ sở dữ liệu tồn kho được trừ số lượng tương ứng.\newline
+$\bullet$ Lịch sử trừ kho được ghi nhận cho tài khoản Đầu bếp. \\ \hline
+\textbf{Normal Flow} &
+1. Đầu bếp mở chức năng ``Cập nhật tồn kho'' trên màn hình quản lý.\newline
+2. Đầu bếp tìm kiếm tên nguyên liệu (ví dụ: Cá hồi fillet, Dầu ăn).\newline
+3. Hệ thống hiển thị số lượng tồn khả dụng hiện tại.\newline
+4. Đầu bếp nhập số lượng cần trừ đi (báo hỏng, hao hụt) và ghi chú lý do (VD: ``Làm rớt'').\newline
+5. Hệ thống xác nhận giao dịch, cập nhật lại số tồn thực tế và lưu vào nhật ký (audit log). \\ \hline
+\textbf{Alternative Flows} &
+\textbf{4a. Số lượng trừ vượt quá tồn kho hiện tại:} Hệ thống cảnh báo ``Số lượng trừ không hợp lệ (Vượt quá tồn kho)''. Đầu bếp phải nhập lại số chính xác hoặc yêu cầu quản lý kiểm kê kho vật lý. \\ \hline
+\end{longtable}
+
+\begin{longtable}{|p{3.5cm}|p{12.5cm}|}
+\hline
+\textbf{Use Case ID} & UC19 \\ \hline
+\textbf{Use Case Name} & Xuất hóa đơn tổng hợp phí thức ăn, đồ uống và các phụ phí \\ \hline
+\textbf{Primary Actors} & Thu ngân (Cashiers) \\ \hline
+\textbf{Description} & Hệ thống tự động tính toán tổng số tiền khách hàng cần thanh toán, bao gồm mọi loại phí, để tiến hành thu tiền. \\ \hline
+\textbf{Trigger} & Thu ngân chọn bàn yêu cầu tính tiền trên POS và nhấn ``Thanh toán'' (Checkout). \\ \hline
+\textbf{Preconditions} &
+$\bullet$ Bàn đã ăn xong, khách yêu cầu tính tiền.\newline
+$\bullet$ Toàn bộ món ăn trong đơn đã được đánh dấu ``Đã phục vụ'' (Served). \\ \hline
+\textbf{Postconditions} & $\bullet$ Hóa đơn tạm tính (Pre-receipt) được in ra hoặc hiển thị thành công với con số chính xác tuyệt đối. \\ \hline
+\textbf{Normal Flow} &
+1. Thu ngân chọn bàn yêu cầu tính tiền trên POS và nhấn ``Thanh toán'' (Checkout).\newline
+2. Hệ thống tổng hợp tất cả các món ăn đã gọi và giá tiền tương ứng từ cơ sở dữ liệu.\newline
+3. Hệ thống tự động tính toán các phụ phí: Thuế VAT (VD: 8\% hoặc 10\%), Phí phục vụ (Service charge).\newline
+4. Hệ thống hiển thị màn hình hóa đơn chi tiết với Tạm tính, Tổng phí và Thành tiền cuối cùng.\newline
+5. Thu ngân nhấn ``In hóa đơn tạm tính''. Hệ thống điều khiển máy in nhiệt xuất ra giấy để mang ra cho khách. \\ \hline
+\textbf{Alternative Flows} &
+\textbf{2a. Có món ăn đang kẹt ở trạng thái ``Đang chế biến'':} Hệ thống cảnh báo ``Bàn này vẫn còn món chưa phục vụ. Bạn có chắc muốn tính tiền?''. Thu ngân phải kiểm tra lại với phục vụ để hủy món hoặc chờ phục vụ nốt. \\ \hline
+\end{longtable}
+
+\begin{longtable}{|p{3.5cm}|p{12.5cm}|}
+\hline
+\textbf{Use Case ID} & UC20 \\ \hline
+\textbf{Use Case Name} & Áp dụng mã khuyến mãi hoặc chương trình giảm giá vào hóa đơn \\ \hline
+\textbf{Primary Actors} & Thu ngân (Cashiers) \\ \hline
+\textbf{Description} & Hệ thống xác thực và giảm trừ số tiền thanh toán của khách dựa trên mã voucher, hạng thành viên hoặc chương trình khuyến mãi hiện hành. \\ \hline
+\textbf{Trigger} & Thu ngân chọn mục ``Khuyến mãi / Giảm giá'' tại màn hình Thanh toán. \\ \hline
+\textbf{Preconditions} &
+$\bullet$ Đơn hàng đang ở màn hình Thanh toán.\newline
+$\bullet$ Chưa chốt phương thức thanh toán cuối cùng (chưa đóng bill). \\ \hline
+\textbf{Postconditions} & $\bullet$ Hóa đơn được cập nhật lại số tiền phải trả sau khi áp dụng giảm giá hợp lệ. \\ \hline
+\textbf{Normal Flow} &
+1. Tại màn hình Thanh toán, Thu ngân chọn mục ``Khuyến mãi / Giảm giá''.\newline
+2. Thu ngân quét mã QR voucher, nhập mã code bằng tay hoặc quét thẻ thành viên của khách.\newline
+3. Hệ thống kết nối với dịch vụ Khuyến mãi (Promotion Module) để xác thực tính hợp lệ của mã.\newline
+4. Hệ thống tính toán số tiền được giảm (VD: giảm 10\% trên tổng bill, tối đa 50k).\newline
+5. Hệ thống hiển thị dòng ``Chiết khấu khuyến mãi'' có giá trị âm trên hóa đơn và cập nhật Thành tiền mới.\newline
+6. Thu ngân thông báo cho khách số tiền cuối cùng. \\ \hline
+\textbf{Alternative Flows} &
+\textbf{3a. Mã không hợp lệ hoặc hết hạn:} Hệ thống báo lỗi đỏ: ``Mã khuyến mãi không tồn tại, đã hết hạn hoặc không đủ điều kiện''. Thu ngân thông báo lại cho khách và xóa mã khỏi hóa đơn.\newline
+\textbf{3b. Mã giảm giá trùng lặp:} Hệ thống báo lỗi và yêu cầu Thu ngân chỉ chọn 1 mã có lợi nhất cho khách. \\ \hline
+\end{longtable}
+
+\section*{1.12. Đặc tả Use Case Scenario (Phần 5: UC 21--25)}
+
+\begin{longtable}{|p{3.5cm}|p{12.5cm}|}
+\hline
+\textbf{Use Case ID} & UC21 \\ \hline
+\textbf{Use Case Name} & Thực hiện chia hóa đơn (Split-bill) theo yêu cầu của khách hàng \\ \hline
+\textbf{Primary Actors} & Thu ngân (Cashiers) \\ \hline
+\textbf{Description} & Hệ thống tự động phân chia tổng tiền thành nhiều hóa đơn nhỏ để khách hàng dễ dàng trả tiền theo phần ăn của mỗi người hoặc cưa đều. \\ \hline
+\textbf{Trigger} & Bàn đã ăn xong và khách yêu cầu chia bill; Thu ngân chọn ``Chia hóa đơn'' (Split Bill). \\ \hline
+\textbf{Preconditions} &
+$\bullet$ Bàn đã ăn xong, khách yêu cầu chia bill.\newline
+$\bullet$ Hóa đơn tổng chưa được thanh toán thành công. \\ \hline
+\textbf{Postconditions} & $\bullet$ Hệ thống tách thành nhiều hóa đơn con, mỗi hóa đơn có thể thanh toán bằng các phương thức khác nhau. \\ \hline
+\textbf{Normal Flow} &
+1. Tại màn hình Thanh toán, Thu ngân chọn ``Chia hóa đơn'' (Split Bill).\newline
+2. Hệ thống cung cấp hai lựa chọn: ``Chia đều'' (Split evenly) hoặc ``Chia theo món'' (Split by items).\newline
+3. Thu ngân chọn phương thức (ví dụ: Chia theo món).\newline
+4. Hệ thống mở giao diện kéo-thả (drag-and-drop). Thu ngân kéo các món ăn sang ``Hóa đơn khách A'', ``Hóa đơn khách B''.\newline
+5. Hệ thống tự động tính lại Thuế và Phí phục vụ cho từng hóa đơn con.\newline
+6. Thu ngân tiến hành thanh toán tuần tự cho từng hóa đơn nhỏ. \\ \hline
+\textbf{Alternative Flows} &
+\textbf{5a. Món ăn số lượng 1 nhưng 2 khách muốn cưa đôi:} Thu ngân chọn món đó và bấm ``Chia tỉ lệ'' (Split by fraction). Hệ thống cắt món thành 2 phần (mỗi phần 50\% giá trị) để đưa vào 2 hóa đơn con. \\ \hline
+\end{longtable}
+
+\begin{longtable}{|p{3.5cm}|p{12.5cm}|}
+\hline
+\textbf{Use Case ID} & UC22 \\ \hline
+\textbf{Use Case Name} & Xử lý thanh toán qua tiền mặt, thẻ ngân hàng hoặc ví điện tử \\ \hline
+\textbf{Primary Actors} & Thu ngân (Cashiers) \\ \hline
+\textbf{Description} & Ghi nhận phương thức khách hàng dùng để trả tiền, kết nối với bên thứ 3 (nếu cần) và hoàn tất vòng đời của đơn hàng. \\ \hline
+\textbf{Trigger} & Số tiền cuối cùng trên hóa đơn đã được chốt và Thu ngân hỏi khách phương thức thanh toán. \\ \hline
+\textbf{Preconditions} & $\bullet$ Số tiền cuối cùng trên hóa đơn đã được chốt. \\ \hline
+\textbf{Postconditions} &
+$\bullet$ Giao dịch được ghi nhận ``Thành công''.\newline
+$\bullet$ Đơn hàng chuyển sang trạng thái ``Đã thanh toán'' (Paid).\newline
+$\bullet$ Bàn được giải phóng. \\ \hline
+\textbf{Normal Flow} &
+1. Thu ngân hỏi khách phương thức thanh toán và chọn tương ứng trên POS (Tiền mặt / Thẻ / Ví điện tử).\newline
+2. \textbf{Nếu Tiền mặt:} Thu ngân nhập số tiền khách đưa. Hệ thống tự động tính số tiền thối lại (Change due). Thu ngân bấm ``Hoàn tất''.\newline
+3. \textbf{Nếu Thẻ/Ví điện tử:} Hệ thống truyền số tiền sang máy POS quẹt thẻ hoặc màn hình hiển thị mã QR động.\newline
+4. Khách hàng quẹt thẻ hoặc quét mã QR.\newline
+5. Hệ thống nhận tín hiệu ``Thành công'' từ Payment Gateway trả về.\newline
+6. Hệ thống đổi trạng thái đơn thành ``Đã thanh toán'' và in hóa đơn chính thức (VAT/Receipt). \\ \hline
+\textbf{Alternative Flows} &
+\textbf{5a. Thẻ bị từ chối hoặc quét QR lỗi:} Hệ thống hiển thị popup đỏ ``Giao dịch thất bại'' kèm mã lỗi từ ngân hàng (VD: Số dư không đủ). Thu ngân thông báo khách và hệ thống giữ nguyên hóa đơn để chờ đổi phương thức. \\ \hline
+\end{longtable}
+
+
+
+
+\begin{longtable}{|p{3.5cm}|p{12.5cm}|}
+\hline
+\textbf{Use Case ID} & UC23 \\ \hline
+\textbf{Use Case Name} & Ghi nhận số tiền tip của khách hàng vào hệ thống thanh toán \\ \hline
+\textbf{Primary Actors} & Thu ngân (Cashiers) \\ \hline
+\textbf{Description} & Lưu vết số tiền khách bo (tip) thêm ngoài hóa đơn để báo cáo doanh thu và phân chia cho nhân viên vào cuối ngày. \\ \hline
+\textbf{Trigger} & Trước khi chốt giao dịch thẻ, hệ thống hiển thị màn hình yêu cầu nhập số tiền Tip. \\ \hline
+\textbf{Preconditions} &
+$\bullet$ Đơn hàng đang được thanh toán bằng Thẻ tín dụng hoặc khách đưa dư tiền mặt và bảo giữ lại làm tip. \\ \hline
+\textbf{Postconditions} & $\bullet$ Số tiền Tip được ghi nhận riêng biệt so với Doanh thu bán hàng, phục vụ cho báo cáo tài chính. \\ \hline
+\textbf{Normal Flow} &
+1. Trước khi chốt giao dịch thẻ, hệ thống hiển thị màn hình (hoặc in pre-receipt) yêu cầu nhập số tiền Tip.\newline
+2. Khách hàng viết tay số tiền tip hoặc chọn \% tip trên màn hình phụ (Customer Display).\newline
+3. Thu ngân (hoặc khách) nhập con số đó vào ô ``Tiền Tip'' trên POS.\newline
+4. Hệ thống cộng dồn tiền món ăn và tiền tip để ra tổng số tiền thực tế cần trừ vào thẻ khách.\newline
+5. Hệ thống ghi nhận giao dịch: Tách rõ phần ``Doanh thu món'' và ``Quỹ Tip''. \\ \hline
+\textbf{Alternative Flows} &
+\textbf{3a. Nhập nhầm tiền Tip quá lớn:} Nếu số tiền Tip lớn hơn 50\% giá trị hóa đơn, hệ thống bật popup cảnh báo ``Số tiền tip bất thường. Xác nhận?''. Thu ngân phải kiểm tra lại với khách trước khi bấm ``Tiếp tục''. \\ \hline
+\end{longtable}
+
+\begin{longtable}{|p{3.5cm}|p{12.5cm}|}
+\hline
+\textbf{Use Case ID} & UC24 \\ \hline
+\textbf{Use Case Name} & Thêm, sửa, xóa các món ăn trong thực đơn và cấu hình giá bán \\ \hline
+\textbf{Primary Actors} & Quản lý (Managers) \\ \hline
+\textbf{Description} & Cập nhật bộ thực đơn cốt lõi của nhà hàng (thêm món mới theo mùa, đổi giá) để POS và KDS đồng bộ ngay lập tức. \\ \hline
+\textbf{Trigger} & Quản lý truy cập mục ``Quản lý Thực đơn'' và nhấn ``Thêm món mới'' hoặc chọn một món để ``Sửa''. \\ \hline
+\textbf{Preconditions} & $\bullet$ Quản lý đã đăng nhập vào hệ thống Admin Web với quyền ``Admin'' hoặc ``Manager''. \\ \hline
+\textbf{Postconditions} &
+$\bullet$ Cơ sở dữ liệu thực đơn được cập nhật.\newline
+$\bullet$ Mọi thiết bị POS/App của nhân viên tự động tải về thực đơn mới nhất. \\ \hline
+\textbf{Normal Flow} &
+1. Quản lý truy cập mục ``Quản lý Thực đơn'' (Menu Management).\newline
+2. Quản lý nhấn ``Thêm món mới'' hoặc chọn một món hiện có để ``Sửa''.\newline
+3. Hệ thống hiển thị biểu mẫu chi tiết: Tên món, Hình ảnh, Mô tả, Giá bán, Phân loại, Trạm bếp phụ trách.\newline
+4. Quản lý nhập thông tin và nhấn ``Lưu thay đổi''.\newline
+5. Hệ thống lưu vào Database và phát broadcast event báo cho tất cả thiết bị POS tải lại cache (Menu sync). \\ \hline
+\textbf{Alternative Flows} &
+\textbf{4a. Xóa món ăn đang nằm trong đơn hàng chưa phục vụ xong:} Hệ thống chặn lệnh Xóa và báo lỗi ``Không thể xóa món này vì đang có đơn hàng đang chờ phục vụ. Vui lòng chuyển sang trạng thái Ẩn/Hết hàng tạm thời''. \\ \hline
+\end{longtable}
+
+\begin{longtable}{|p{3.5cm}|p{12.5cm}|}
+\hline
+\textbf{Use Case ID} & UC25 \\ \hline
+\textbf{Use Case Name} & Đánh dấu món ăn ``hết hàng'' trên thực đơn theo thời gian thực \\ \hline
+\textbf{Primary Actors} & Quản lý (Managers) / Đầu bếp trưởng (Head Chef) \\ \hline
+\textbf{Description} & Ngăn chặn việc nhân viên phục vụ tiếp tục order một món ăn đã hết nguyên liệu dưới bếp, tránh việc phải ra bàn xin lỗi khách. \\ \hline
+\textbf{Trigger} & Đầu bếp báo hết nguyên liệu hoặc Quản lý nhận thấy cảnh báo tồn kho và vào chức năng ``Trạng thái Menu 86''. \\ \hline
+\textbf{Preconditions} & $\bullet$ Người dùng có quyền ``Cập nhật trạng thái thực đơn''. \\ \hline
+\textbf{Postconditions} & $\bullet$ Món ăn bị làm mờ (gray out) trên tất cả các màn hình gọi món, nhân viên không thể bấm chọn. \\ \hline
+\textbf{Normal Flow} &
+1. Đầu bếp báo hết nguyên liệu cho Quản lý, hoặc Quản lý tự nhận thấy qua cảnh báo tồn kho.\newline
+2. Quản lý mở ứng dụng POS hoặc Admin Web, vào chức năng ``Trạng thái Menu 86'' (Sold out).\newline
+3. Quản lý tìm món ăn đó và bật công tắc (toggle) từ ``Còn hàng'' (In stock) sang ``Hết hàng'' (Sold out).\newline
+4. Hệ thống ngay lập tức đẩy bản cập nhật xuống tất cả các iPad/POS đang mở của nhân viên phục vụ.\newline
+5. Món ăn tự động hiển thị mờ đi kèm chữ ``Hết hàng'' không thể bấm chọn. \\ \hline
+\textbf{Alternative Flows} &
+\textbf{3a. Hết hàng có định mức (Chỉ còn đúng 5 phần):} Thay vì chọn hết hàng hoàn toàn, quản lý chọn ``Giới hạn số lượng'' và nhập số ``5''. Hệ thống đếm lùi trên POS mỗi khi nhân viên order món đó, về 0 sẽ tự động khóa lại. \\ \hline
+\end{longtable}
+
+
+\begin{longtable}{|p{3.5cm}|p{12.5cm}|}
+\hline
+\textbf{Use Case ID} & UC26 \\ \hline
+\textbf{Use Case Name} & Theo dõi cảnh báo hàng tồn kho khi mức nguyên liệu xuống dưới ngưỡng an toàn \\ \hline
+\textbf{Primary Actors} & Quản lý (Managers) \\ \hline
+\textbf{Description} & Đảm bảo nhà hàng luôn có đủ nguyên liệu bằng cách nhắc nhở Quản lý đặt hàng kịp thời trước khi cạn kiệt. \\ \hline
+\textbf{Trigger} & Hệ thống phát hiện số lượng một nguyên liệu giảm xuống dưới mức Ngưỡng an toàn (Reorder level). \\ \hline
+\textbf{Preconditions} & $\bullet$ Module Quản lý Tồn kho đã được thiết lập mức ``Ngưỡng an toàn'' (Reorder level) cho từng loại nguyên liệu. \\ \hline
+\textbf{Postconditions} & $\bullet$ Quản lý nhận được thông tin để lên kế hoạch nhập hàng mới. \\ \hline
+\textbf{Normal Flow} &
+1. Hệ thống liên tục ghi nhận lượng nguyên liệu bị trừ đi sau mỗi lần bán món ăn (theo định lượng công thức) hoặc trừ thủ công từ bếp.\newline
+2. Ngay khi số lượng một nguyên liệu giảm xuống dưới ngưỡng an toàn, hệ thống tạo một cảnh báo tự động.\newline
+3. Hệ thống hiển thị cảnh báo trên màn hình Dashboard của Admin Web.\newline
+4. (Tuỳ chọn) Hệ thống gửi email hoặc thông báo qua App quản lý về nguyên liệu sắp hết.\newline
+5. Quản lý xem cảnh báo, nhấn vào để xem lịch sử tiêu thụ và dự đoán thời gian cạn kiệt hoàn toàn. \\ \hline
+\textbf{Alternative Flows} &
+\textbf{1a. Lỗi sai lệch định lượng:} Nếu tồn kho thực tế khác với hệ thống (do hao hụt không khai báo), cảnh báo có thể hiển thị muộn. Quản lý phải dùng chức năng ``Kiểm kê kho'' (Stock-take) để điều chỉnh lại số liệu chuẩn trước. \\ \hline
+\end{longtable}
+
+\begin{longtable}{|p{3.5cm}|p{12.5cm}|}
+\hline
+\textbf{Use Case ID} & UC27 \\ \hline
+\textbf{Use Case Name} & Xem báo cáo phân tích doanh thu theo giờ cao điểm và món bán chạy \\ \hline
+\textbf{Primary Actors} & Quản lý (Managers) \\ \hline
+\textbf{Description} & Cung cấp cái nhìn tổng quan về hiệu quả kinh doanh, giúp Quản lý đưa ra quyết định thay đổi menu hoặc tăng cường nhân sự. \\ \hline
+\textbf{Trigger} & Quản lý truy cập vào module ``Báo cáo \& Phân tích'' và chọn loại báo cáo ``Doanh thu''. \\ \hline
+\textbf{Preconditions} &
+$\bullet$ Quản lý đã đăng nhập vào hệ thống.\newline
+$\bullet$ Có đủ dữ liệu giao dịch từ module Thanh toán trong khoảng thời gian muốn xem. \\ \hline
+\textbf{Postconditions} & $\bullet$ Báo cáo trực quan (biểu đồ) được hiển thị hoặc xuất ra file thành công. \\ \hline
+\textbf{Normal Flow} &
+1. Quản lý truy cập vào module ``Báo cáo \& Phân tích'' (Analytics \& Reports).\newline
+2. Chọn loại báo cáo ``Doanh thu'' và thiết lập bộ lọc (VD: Hôm nay, Tuần này, Tháng này).\newline
+3. Hệ thống truy vấn dữ liệu từ cơ sở dữ liệu báo cáo (Reporting DB) để không ảnh hưởng đến DB giao dịch.\newline
+4. Hệ thống vẽ biểu đồ doanh thu theo từng khung giờ trong ngày và biểu đồ Top 5 món bán chạy nhất.\newline
+5. Quản lý xem xét biểu đồ, có thể di chuột vào biểu đồ để xem con số chi tiết. \\ \hline
+\textbf{Alternative Flows} &
+\textbf{3a. Dữ liệu quá lớn gây tải chậm:} Hệ thống hiển thị thanh tiến trình (Loading bar) và thông báo ``Đang tổng hợp dữ liệu, vui lòng chờ...''. \\ \hline
+\end{longtable}
+
+\begin{longtable}{|p{3.5cm}|p{12.5cm}|}
+\hline
+\textbf{Use Case ID} & UC28 \\ \hline
+\textbf{Use Case Name} & Phân tích đánh giá hiệu suất nhân viên và độ trễ phục vụ tại bếp \\ \hline
+\textbf{Primary Actors} & Quản lý (Managers) \\ \hline
+\textbf{Description} & Phát hiện các nút thắt cổ chai (bottlenecks) trong vận hành, đánh giá đầu bếp nào làm việc nhanh nhất và nhân viên phục vụ nào xử lý đơn tốt nhất. \\ \hline
+\textbf{Trigger} & Quản lý chọn tab ``Hiệu suất Vận hành'' trong module Báo cáo. \\ \hline
+\textbf{Preconditions} & $\bullet$ Hệ thống lưu trữ đầy đủ tem thời gian (timestamps) của mọi hành động trên POS và KDS. \\ \hline
+\textbf{Postconditions} & $\bullet$ Báo cáo hiệu suất vận hành (Operational Analytics) được xuất ra chi tiết. \\ \hline
+\textbf{Normal Flow} &
+1. Quản lý chọn tab ``Hiệu suất Vận hành'' trong module Báo cáo.\newline
+2. Hệ thống tổng hợp các chỉ số: Thời gian trung bình từ ``Chờ chế biến'' đến ``Sẵn sàng'' (Prep Time), từ ``Sẵn sàng'' đến ``Đã phục vụ'' (Service Time).\newline
+3. Hệ thống nhóm dữ liệu theo từng Trạm bếp (Station) hoặc từng Nhân viên (Staff ID).\newline
+4. Hệ thống hiển thị bảng xếp hạng nhân viên/trạm bếp, tô đỏ các trạm có tỷ lệ trễ SLA cao nhất.\newline
+5. Quản lý dùng thông tin này để đào tạo lại hoặc sắp xếp lại nhân sự trong ca làm. \\ \hline
+\textbf{Alternative Flows} &
+\textbf{2a. Dữ liệu nhiễu (Nhân viên quên bấm nút hoàn thành):} Nếu có phiếu bị bỏ quên dẫn đến thời gian nấu ghi nhận bất thường, hệ thống tự động loại bỏ các giá trị ngoại lai (outliers) khỏi công thức tính trung bình. \\ \hline
+\end{longtable}
+
+\begin{longtable}{|p{3.5cm}|p{12.5cm}|}
+\hline
+\textbf{Use Case ID} & UC29 \\ \hline
+\textbf{Use Case Name} & Phân quyền và cấp tài khoản truy cập cho từng vai trò nhân sự \\ \hline
+\textbf{Primary Actors} & Quản lý (Managers) / Quản trị hệ thống (Admin) \\ \hline
+\textbf{Description} & Đảm bảo tính bảo mật của hệ thống bằng cách kiểm soát quyền truy cập dựa trên vai trò (Role-Based Access Control -- RBAC). \\ \hline
+\textbf{Trigger} & Quản lý truy cập chức năng ``Quản lý Nhân sự / Tài khoản'' và nhấn ``Tạo tài khoản mới''. \\ \hline
+\textbf{Preconditions} & $\bullet$ Quản lý đăng nhập bằng tài khoản có đặc quyền cao nhất (Super Admin / Manager). \\ \hline
+\textbf{Postconditions} &
+$\bullet$ Tài khoản mới được tạo hoặc quyền của tài khoản cũ được thay đổi.\newline
+$\bullet$ Thay đổi có hiệu lực ngay trong lần đăng nhập tiếp theo của nhân viên. \\ \hline
+\textbf{Normal Flow} &
+1. Quản lý truy cập chức năng ``Quản lý Nhân sự / Tài khoản''.\newline
+2. Quản lý nhấn ``Tạo tài khoản mới'' và nhập thông tin (Tên, Mã NV, Mật khẩu tạm).\newline
+3. Quản lý gán vai trò (Role) cho tài khoản, ví dụ chọn ``Thu ngân''.\newline
+4. Hệ thống tự động ánh xạ vai trò ``Thu ngân'' với các nhóm quyền cụ thể (Được thanh toán, In bill; KHÔNG được xóa bill đã in, KHÔNG xem báo cáo doanh thu tổng).\newline
+5. Quản lý nhấn ``Lưu''.\newline
+6. Hệ thống tạo tài khoản trong cơ sở dữ liệu và nhân viên có thể đăng nhập vào POS ngay lập tức. \\ \hline
+\textbf{Alternative Flows} &
+\textbf{3a. Trùng lặp ID Nhân viên:} Hệ thống cảnh báo ``Mã Nhân viên này đã tồn tại trong hệ thống. Vui lòng nhập mã khác''. Khóa nút Lưu cho đến khi nhập đúng. \\ \hline
+\end{longtable}
+
+\begin{longtable}{|p{3.5cm}|p{12.5cm}|}
+\hline
+\textbf{Use Case ID} & UC30 \\ \hline
+\textbf{Use Case Name} & Truy xuất nhật ký kiểm toán (Audit Logs) để rà soát các thao tác hủy đơn và hoàn tiền \\ \hline
+\textbf{Primary Actors} & Quản lý (Managers) / Kế toán (Accountant) \\ \hline
+\textbf{Description} & Phát hiện và ngăn ngừa gian lận (VD: nhân viên cố tình xóa đơn hàng đã thu tiền khách), đảm bảo tính minh bạch. \\ \hline
+\textbf{Trigger} & Quản lý truy cập chức năng ``Nhật ký Kiểm toán'' và thiết lập bộ lọc theo hành động Hủy đơn/Hoàn tiền. \\ \hline
+\textbf{Preconditions} &
+$\bullet$ Người dùng có quyền truy cập module ``Nhật ký Hệ thống'' (Audit Logs).\newline
+$\bullet$ Hệ thống đã bật chức năng ghi log cho mọi thao tác nhạy cảm. \\ \hline
+\textbf{Postconditions} & $\bullet$ Quản lý xem được lịch sử chi tiết ``Ai đã làm gì, vào lúc nào'' để đối soát. \\ \hline
+\textbf{Normal Flow} &
+1. Quản lý truy cập chức năng ``Nhật ký Kiểm toán''.\newline
+2. Quản lý thiết lập bộ lọc: Hành động = ``Hủy đơn'' (Void) hoặc ``Hoàn tiền'' (Refund); Khung thời gian = ``Hôm qua''.\newline
+3. Hệ thống trả về danh sách các sự kiện khớp với bộ lọc.\newline
+4. Quản lý nhấn vào một dòng bất kỳ để xem chi tiết.\newline
+5. Hệ thống hiển thị: Người thực hiện (Tên \& ID), Thời gian chính xác, Lý do hủy (do nhân viên nhập), ID Đơn hàng bị ảnh hưởng, và Quản lý nào đã duyệt (nếu có yêu cầu duyệt). \\ \hline
+\textbf{Alternative Flows} &
+\textbf{3a. Hành vi đáng ngờ số lượng lớn:} Nếu một nhân viên có hơn 3 lượt hủy đơn trong cùng 1 ca làm, hệ thống bôi đỏ tên nhân viên đó trên dòng log để Quản lý đặc biệt chú ý kiểm tra. \\ \hline
+\end{longtable}
