@@ -1,0 +1,27 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: order-service
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/irms_order
+    username: ${POSTGRES_USER:irms_user}
+    password: ${POSTGRES_PASSWORD:irms_pass}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+clients:
+  menu-service:
+    base-url: ${MENU_SERVICE_URL:http://localhost:8082}
+  table-service:
+    base-url: ${TABLE_SERVICE_URL:http://localhost:8085}
+  kitchen-service:
+    base-url: ${KITCHEN_SERVICE_URL:http://localhost:8084}

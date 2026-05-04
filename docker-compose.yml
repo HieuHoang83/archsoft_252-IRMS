@@ -37,6 +37,79 @@ services:
     networks:
       - irms-network
 
+  table-service:
+    build:
+      context: .
+      dockerfile: services/table-service/Dockerfile
+    ports:
+      - "8085:8085"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/irms_table
+      - POSTGRES_USER=irms_user
+      - POSTGRES_PASSWORD=irms_pass
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    restart: on-failure
+    networks:
+      - irms-network
+
+  order-service:
+    build:
+      context: .
+      dockerfile: services/order-service/Dockerfile
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/irms_order
+      - POSTGRES_USER=irms_user
+      - POSTGRES_PASSWORD=irms_pass
+      - MENU_SERVICE_URL=http://menu-service:8082
+      - TABLE_SERVICE_URL=http://table-service:8085
+      - KITCHEN_SERVICE_URL=http://kitchen-service:8084
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    restart: on-failure
+    networks:
+      - irms-network
+
+  kitchen-service:
+    build:
+      context: .
+      dockerfile: services/kitchen-service/Dockerfile
+    ports:
+      - "8084:8084"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/irms_kitchen
+      - POSTGRES_USER=irms_user
+      - POSTGRES_PASSWORD=irms_pass
+      - ORDER_SERVICE_URL=http://order-service:8083
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    restart: on-failure
+    networks:
+      - irms-network
+
+  payment-service:
+    build:
+      context: .
+      dockerfile: services/payment-service/Dockerfile
+    ports:
+      - "8086:8086"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/irms_payment
+      - POSTGRES_USER=irms_user
+      - POSTGRES_PASSWORD=irms_pass
+      - ORDER_SERVICE_URL=http://order-service:8083
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    restart: on-failure
+    networks:
+      - irms-network
+
   # --- Data Layer ---
   postgres-db:
     image: postgres:15

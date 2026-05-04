@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "menu_items")
@@ -40,4 +42,10 @@ public class MenuItem extends BaseEntity {
 
     @Column(name = "image_url")
     private String imageUrl;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "menu_item_allergens", joinColumns = @JoinColumn(name = "menu_item_id"))
+    @Column(name = "allergen")
+    @Builder.Default
+    private List<String> allergens = new ArrayList<>();
 }

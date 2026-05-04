@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: payment-service
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/irms_payment}
+    username: ${POSTGRES_USER:irms_user}
+    password: ${POSTGRES_PASSWORD:irms_pass}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+server:
+  port: 8086
+
+clients:
+  order-service:
+    base-url: ${ORDER_SERVICE_URL:http://localhost:8083}

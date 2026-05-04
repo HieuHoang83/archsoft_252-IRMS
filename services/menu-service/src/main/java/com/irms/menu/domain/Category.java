@@ -22,6 +22,7 @@ public class Category extends BaseEntity {
     private String name;
 
     @Column(name = "display_order")
+    @Builder.Default
     private Integer displayOrder = 0;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -8,6 +8,7 @@ spring:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/irms_auth}
     username: ${POSTGRES_USER:irms_user}
     password: ${POSTGRES_PASSWORD:irms_pass}
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: update
