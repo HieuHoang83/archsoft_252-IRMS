@@ -24,7 +24,7 @@ public class MenuServiceClientImpl implements MenuServiceClient {
     @Override
     public MenuItemDTO getMenuItem(UUID menuItemId) {
         try {
-            String url = menuServiceUrl + "/api/v1/menu-items/" + menuItemId;
+            String url = menuServiceUrl + "/api/menu/" + menuItemId;
             return restTemplate.getForObject(url, MenuItemDTO.class);
         } catch (RestClientException e) {
             throw new ServiceUnavailableException("Menu service is currently unavailable", e);

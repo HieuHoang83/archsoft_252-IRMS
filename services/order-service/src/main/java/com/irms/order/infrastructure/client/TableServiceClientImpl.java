@@ -24,7 +24,7 @@ public class TableServiceClientImpl implements TableServiceClient {
     @Override
     public TableResponseDTO getTable(UUID tableId) {
         try {
-            String url = tableServiceUrl + "/api/v1/tables/" + tableId;
+            String url = tableServiceUrl + "/api/tables/" + tableId;
             return restTemplate.getForObject(url, TableResponseDTO.class);
         } catch (RestClientException e) {
             throw new ServiceUnavailableException("Table service is currently unavailable", e);
